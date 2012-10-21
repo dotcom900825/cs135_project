@@ -11,7 +11,7 @@
 		 <body>
 		  <fieldset style="background: none repeat scroll 0 0 #F9F8F3;">
 		  	<legend>Personal Information</legend>
-		  	<form method="POST" action="address.jsp">	
+		  	<form method="POST" action="chooseLocation.jsp">	
 		  	<h3>Full legal Name</h3>		  
 		  	  <div class="container-fluid">
 				  <div class="row-fluid">
@@ -21,7 +21,9 @@
 					  		</label>
 					  	</div>
 					  	<div class="span9">     		      
-					  			<input id="FIRST_NAME" type="text"  maxlength="50" size="25" name="first_name">
+					  			<input id="FIRST_NAME" type="text"  readonly="readonly" 
+					  			<%out.print("value=" + (request.getParameter("first_name").isEmpty() ? " '' " : request.getParameter("first_name")));%>
+					  			 maxlength="50" size="25" name="first_name">
 						</div>
 						
 						<div class="span2">
@@ -30,7 +32,9 @@
 					  		</label>
 					  	</div>
 					  	<div class="span9" style="margin-left:0px;">					      			      
-					  			<input id="LAST_NAME" type="text"  maxlength="50" size="25" name="last_name">
+					  			<input id="LAST_NAME" type="text"  maxlength="50" size="25" readonly="readonly" 
+					  			<%out.print("value=" + (request.getParameter("last_name").isEmpty() ? " '' " : request.getParameter("last_name")));%> 
+					  			name="last_name">
 						</div>
 						
 						<div class="span2">
@@ -39,7 +43,9 @@
 					  		</label>
 					  	</div>
 					  	<div class="span9" style="margin-left:0px;">					      			      
-					  			<input id="MIDDLE_NAME" type="text" maxlength="50" size="25" name="middle_name">
+					  			<input id="MIDDLE_NAME" type="text" maxlength="50" size="25" readonly="readonly"  
+					  			<%out.print("value=" + (request.getParameter("middle_name").isEmpty() ? " '' " : request.getParameter("middle_name")));%> 
+					  			name="middle_name">
 						</div>
 						
 						<div class="span2">
@@ -48,23 +54,14 @@
 					  		</label>
 					  	</div>
 					  	<div class="span8" style="margin-left:0px;">					      			      
-							<select name="country_state">
-								<% 
-								support s = new support();   	
-							   	
-							   	String path1 = config.getServletContext().getRealPath("/support/countries_and_states.txt");
-							    //getCountriesAndStates returns a vector of the countries to be used for choosing citizenship
-							    Vector<CountryState> countries_and_states = s.getCountriesAndStates(path1); 
-							    
-							    for(int i=0; i<countries_and_states.size(); i++)
-							        out.println("<option" + " value=" + (String) ((CountryState)countries_and_states.get(i)).countryStateName + ">" + (String) ((CountryState)countries_and_states.get(i)).countryStateName + "</option>");
-							    							
-								%>
-							</select>				  	
+								<input id="country_state" type="text" maxlength="50" size="25" readonly="readonly"  
+								<%out.print("value='" + request.getParameter("country_state") + "'");%> name="country_state">  	
 					  	</div>
+					  	<!-- Hey your code should starts from here -->
 					  		
+					  	<!-- Ends here -->
 						<div class="span8" style="margin-left:300px;">					      			      
-					  			<input type="submit" name="submit" value="Submit">						
+					  			<input type="submit" name="submit" value="Submit Address">						
 					  	</div>
 					
 				   </div>
