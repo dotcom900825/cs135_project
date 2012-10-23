@@ -3,7 +3,7 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
  <head>
- 	<title>Multiplier Form</title>
+ 	<title>Name</title>
  	<link href="${pageContext.request.contextPath}/css/bootstrap.min.css" rel="stylesheet">
  	<script src="js/bootstrap.min.js"></script>
  	<script src="http://code.jquery.com/jquery-latest.js"></script>
@@ -48,7 +48,7 @@
 					  		</label>
 					  	</div>
 					  	<div class="span8" style="margin-left:0px;">					      			      
-							<select name="country_state">
+							<select name="country">
 								<% 
 								support s = new support();   	
 							   	
@@ -56,10 +56,11 @@
 							    //getCountriesAndStates returns a vector of the countries to be used for choosing citizenship
 							    Vector<CountryState> countries_and_states = s.getCountriesAndStates(path1); 
 							    
-							    for(int i=0; i<countries_and_states.size(); i++)
+							    for(int i=51; i<countries_and_states.size(); i++)
 							        out.println("<option" + " value=" + (String) ((CountryState)countries_and_states.get(i)).countryStateName + ">" + (String) ((CountryState)countries_and_states.get(i)).countryStateName + "</option>");
 							    							
 								%>
+
 							</select>				  	
 					  	</div>
 					  		

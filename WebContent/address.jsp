@@ -3,7 +3,7 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
  <head>
- 	<title>Multiplier Form</title>
+ 	<title>Address</title>
  	<link href="${pageContext.request.contextPath}/css/bootstrap.min.css" rel="stylesheet">
  	<script src="js/bootstrap.min.js"></script>
  	<script src="http://code.jquery.com/jquery-latest.js"></script>
@@ -22,7 +22,12 @@
 					  	</div>
 					  	<div class="span9">     		      
 					  			<input id="FIRST_NAME" type="text"  readonly="readonly" 
-					  			<%out.print("value=" + (request.getParameter("first_name").isEmpty() ? " '' " : request.getParameter("first_name")));%>
+					  			<%
+					  				util.firstName = (request.getParameter("first_name").isEmpty() ? 
+					  						" '' " : request.getParameter("first_name"));
+					  				
+					  				out.print("value=" + util.firstName);		
+					  			%>
 					  			 maxlength="50" size="25" name="first_name">
 						</div>
 						
@@ -33,7 +38,10 @@
 					  	</div>
 					  	<div class="span9" style="margin-left:0px;">					      			      
 					  			<input id="LAST_NAME" type="text"  maxlength="50" size="25" readonly="readonly" 
-					  			<%out.print("value=" + (request.getParameter("last_name").isEmpty() ? " '' " : request.getParameter("last_name")));%> 
+					  			<%
+					  				util.lastName = (request.getParameter("last_name").isEmpty() ? 
+					  						" '' " : request.getParameter("last_name"));
+					  				out.print("value=" + util.lastName);%> 
 					  			name="last_name">
 						</div>
 						
@@ -44,7 +52,12 @@
 					  	</div>
 					  	<div class="span9" style="margin-left:0px;">					      			      
 					  			<input id="MIDDLE_NAME" type="text" maxlength="50" size="25" readonly="readonly"  
-					  			<%out.print("value=" + (request.getParameter("middle_name").isEmpty() ? " '' " : request.getParameter("middle_name")));%> 
+					  			<%
+					  				util.middleName = (request.getParameter("middle_name").isEmpty() ? 
+				  						" '' " : request.getParameter("middle_name"));
+					  				out.print("value=" + util.middleName);
+					  				
+					  			%> 
 					  			name="middle_name">
 						</div>
 						
@@ -53,13 +66,69 @@
 					  			<span style="margin-left:100px;">Country</span>
 					  		</label>
 					  	</div>
-					  	<div class="span8" style="margin-left:0px;">					      			      
-								<input id="country_state" type="text" maxlength="50" size="25" readonly="readonly"  
-								<%out.print("value='" + request.getParameter("country_state") + "'");%> name="country_state">  	
+					  	<div class="span9" style="margin-left:0px;">					      			      
+								<input id="country" type="text" maxlength="50" size="25" readonly="readonly"  
+								<%
+									util.country = (request.getParameter("country").isEmpty() ? 
+				  						" '' " : request.getParameter("country"));
+									out.print("value='" + util.country + "'");
+									
+								%> name="country">  	
 					  	</div>
-					  	<!-- Hey your code should starts from here -->
-					  		
+					  			
+					  			
+					  			<!-- Hey your code should starts from here -->
+					  	<div class="span2">
+					    	<label>
+					  			<span style="margin-left:100px;">Street Address</span>
+					  		</label>
+					  	</div>
+					  	<div class="span9" style="margin-left:0px;">					      			      
+					  			<input id="STREET_ADDRESS" type="text"  maxlength="50" size="25" name="street_address">
+						</div>
+						<div class="span2">
+					    	<label>
+					  			<span style="margin-left:100px;">City</span>
+					  		</label>
+					  	</div>
+					  	<div class="span9" style="margin-left:0px;">					      			      
+					  			<input id="CITY" type="text"  maxlength="50" size="25" name="city">
+						</div>
+					  						      			      
+					  				<%support s = new support();   	
+							   	
+							   	String path1 = config.getServletContext().getRealPath("/support/countries_and_states.txt");
+							    //getCountriesAndStates returns a vector of the countries to be used for choosing citizenship
+							    Vector<CountryState> countries_and_states = s.getCountriesAndStates(path1); 
+							    
+							    if(request.getParameter("country").equals("United")){%>
+						<div class="span2">
+					    	<label>
+					  			<span style="margin-left:100px;">State</span>
+					  		</label>
+					  	</div>
+					  	<div class="span9" style="margin-left:0px;">
+							    	<%
+							    	out.println("<select name=\"state\">");
+							    	for(int i=0; i<51; i++)
+								        out.println("<option" + " value=" + (String) ((CountryState)countries_and_states.get(i)).countryStateName + ">" + (String) ((CountryState)countries_and_states.get(i)).countryStateName + "</option>");
+									out.println("</select> </div>");
+							    }
+								%>
+
+
+					  	
+					  	<div class="span2">
+					  		<label>
+					  			<span style="margin-left:100px;">Zip Code</span>
+					  		</label>
+					  	</div>
+					  	<div class="span10" style="margin-left:0px;">					      			      
+					  			<input id="ZIP_CODE" type="text"  maxlength="50" size="25" name="zip_code">
+						</div>
 					  	<!-- Ends here -->
+
+
 						<div class="span8" style="margin-left:300px;">					      			      
 					  			<input type="submit" name="submit" value="Submit Address">						
 					  	</div>

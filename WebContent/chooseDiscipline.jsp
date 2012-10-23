@@ -3,7 +3,7 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
  <head>
- 	<title>ChooseUniversity</title>
+ 	<title>ChooseDicipline</title>
  	<link href="${pageContext.request.contextPath}/css/bootstrap.min.css" rel="stylesheet">
  	<script src="js/bootstrap.min.js"></script>
  	<script src="http://code.jquery.com/jquery-latest.js"></script>
@@ -115,46 +115,21 @@
 								name="zip_code">  	
 					  	</div>
 					  	
-					  	<table width="100%" class="table">
-							  <%
-							  String place = request.getParameter("place");
-							  out.println(place);
-							 	 support s = new support();   			   	
-							   	String path1 = config.getServletContext().getRealPath("/support/universities.txt");
-							    //getCountriesAndStates returns a vector of the countries to be used for choosing citizenship
-							    Vector universities = s.getUniversities(path1);
-							 	for(int i = 0; i < universities.size(); i ++)
-							 	{
-							 		  Vector tuple = (Vector)universities.get(i);
-							 	      String state = (String)tuple.get(0);
-							 	      if(state.equals(place))
-							 	      {
-							 	    	 Vector u = (Vector)tuple.get(1);
-									         for(int row = 0; row < u.size()/3; row++)
-									         {
-									        	 out.print("<tr>");
-									        	 for(int column = 0; column < 3; column++)
-									        	 {
-									        		String school = (String)u.get(row * 3 + column);
-									 		        out.println("<th><a href='./chooseDiscipline.jsp?school=" + school + " '>" + school+"</a></th>");    
-									        	 }
-									        	 out.print("</tr>");
-									         }
-							 	      }
-							 	}
-							   	//Vector tuple = (Vector)universities.get(universities.indexOf(place));
-							 	/*Vector u = (Vector)tuple.get(1);
-						         for(int row = 0; row < u.size()/3; row++)
-						         {
-						        	 for(int column = 0; column < 3; column++)
-						        	 {
-						        		String school = (String)u.get(row * 3 + column);
-						 		        out.println("<th><a href='localhost:8080/assignment1/chooseDiscipline.jsp?school=" + school + " '>" + school+"</a></th>");    
-						        	 }
-						         }*/
-						            							  							           			   							  
-							  %>
-						</table>
+					  	<div class="span2">
+					    	<label>
+					  			<span style="margin-left:100px;">School</span>
+					  		</label>
+					  	</div>
+					  	<div class="span9" style="margin-left:0px;">					      			      
+									<input id="COUNTRY" type="text" maxlength="50" size="25" readonly="readonly"  
+									<%
+										util.school = (request.getParameter("school").isEmpty() ? 
+														" ' ' " : request.getParameter("school"));
+										out.print("value=" + util.school);%> 
+											  			name="school">  	
+					  	</div>
+					  	
+					  	
 						<div class="span8" style="margin-left:300px;">					      			      
 					  			<input type="submit" name="submit" value="Submit Address">						
 					  	</div>
