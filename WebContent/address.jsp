@@ -22,12 +22,12 @@
 					  	</div>
 					  	<div class="span9">     		      
 					  			<input id="FIRST_NAME" type="text"  readonly="readonly" 
-					  			<%
+					  			value="<%
 					  				util.firstName = (request.getParameter("first_name").isEmpty() ? 
 					  						" '' " : request.getParameter("first_name"));
 					  				
-					  				out.print("value=" + util.firstName);		
-					  			%>
+					  				out.print(util.firstName);		
+					  			%>"
 					  			 maxlength="50" size="25" name="first_name">
 						</div>
 						
@@ -38,10 +38,10 @@
 					  	</div>
 					  	<div class="span9" style="margin-left:0px;">					      			      
 					  			<input id="LAST_NAME" type="text"  maxlength="50" size="25" readonly="readonly" 
-					  			<%
+					  			value="<%
 					  				util.lastName = (request.getParameter("last_name").isEmpty() ? 
 					  						" '' " : request.getParameter("last_name"));
-					  				out.print("value=" + util.lastName);%> 
+					  				out.print(util.lastName);%>" 
 					  			name="last_name">
 						</div>
 						
@@ -52,12 +52,12 @@
 					  	</div>
 					  	<div class="span9" style="margin-left:0px;">					      			      
 					  			<input id="MIDDLE_NAME" type="text" maxlength="50" size="25" readonly="readonly"  
-					  			<%
+					  			value="<%
 					  				util.middleName = (request.getParameter("middle_name").isEmpty() ? 
 				  						" '' " : request.getParameter("middle_name"));
-					  				out.print("value=" + util.middleName);
+					  				out.print(util.middleName);
 					  				
-					  			%> 
+					  			%>"
 					  			name="middle_name">
 						</div>
 						
@@ -68,12 +68,12 @@
 					  	</div>
 					  	<div class="span9" style="margin-left:0px;">					      			      
 								<input id="country" type="text" maxlength="50" size="25" readonly="readonly"  
-								<%
+								value="<%
 									util.country = (request.getParameter("country").isEmpty() ? 
 				  						" '' " : request.getParameter("country"));
-									out.print("value='" + util.country + "'");
+									out.print(util.country);
 									
-								%> name="country">  	
+								%>" name="country">  	
 					  	</div>
 					  			
 					  			

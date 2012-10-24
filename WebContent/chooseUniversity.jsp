@@ -23,7 +23,7 @@
 					  	</div>
 					  	<div class="span9">     		      
 					  			<input id="FIRST_NAME" type="text"  readonly="readonly"  
-					  			<%out.print("value=" + util.firstName);%> 
+					  			value="<%out.print(util.firstName);%>" 
 					  			maxlength="50" size="25" name="first_name">
 						</div>
 						
@@ -34,8 +34,7 @@
 					  	</div>
 					  	<div class="span9" style="margin-left:0px;">					      			      
 					  			<input id="LAST_NAME" type="text"  maxlength="50" size="25" readonly="readonly"  
-					  			<%out.print("value=" + util.lastName);%> 
-					  			name="last_name">
+					  			value="<%out.print(util.lastName);%>" name="last_name">
 						</div>
 						
 						<div class="span2">
@@ -45,8 +44,7 @@
 					  	</div>
 					  	<div class="span9" style="margin-left:0px;">					      			      
 					  			<input id="MIDDLE_NAME" type="text" maxlength="50" size="25" readonly="readonly"  
-					  			<%out.print("value=" + util.middleName);%> 
-					  			name="middle_name">
+					  			value="<%out.print(util.middleName);%>" name="middle_name">
 						</div>
 						
 						<div class="span2">
@@ -56,9 +54,7 @@
 					  	</div>
 					  	<div class="span9" style="margin-left:0px;">					      			      
 									<input id="COUNTRY" type="text" maxlength="50" size="25" readonly="readonly"  
-									<%
-											out.print("value=" + util.country);%> 
-											  			name="country">  	
+									value="<%out.print(util.country);%>" name="country">  	
 					  	</div>
 					  	
 					  	<div class="span2">
@@ -68,8 +64,7 @@
 					  	</div>
 					  	<div class="span9" style="margin-left:0px;">					      			      
 					  			<input id="STREET_ADDRESS" type="text" maxlength="50" size="25" readonly="readonly"  
-					  			<%
-					  					out.print("value=" + util.streetAddress);%> 
+					  			value="<%out.print(util.streetAddress);%>" 
 					  			name="street_address">
 						</div>
 					  	
@@ -80,9 +75,7 @@
 					  	</div>
 					  	<div class="span9" style="margin-left:0px;">					      			      
 								<input id="CITY" type="text" maxlength="50" size="25" readonly="readonly"  
-								<%
-										out.print("value=" + util.city);%> 
-								name="city">  	
+								value="<%out.print(util.city);%>" name="city">  	
 					  	</div>
 					  	
 					  	<%
@@ -95,8 +88,7 @@
 					  	</div>
 					  	<div class="span9" style="margin-left:0px;">					      			      
 								<input id="STATE" type="text" maxlength="50" size="25" readonly="readonly"  
-								<%
-									out.print("value=" + util.states);%> 
+								value="<%out.print(util.states);%>" 
 								name="state">  	
 					  	</div>
 					  	<%
@@ -110,9 +102,7 @@
 					  	</div>
 					  	<div class="span8" style="margin-left:0px;">					      			      
 								<input id="ZIP_CODE" type="text" maxlength="50" size="25" readonly="readonly"  
-								<%
-										out.print("value=" + util.zipCode);%> 
-								name="zip_code">  	
+								value="<%out.print(util.zipCode);%>" name="zip_code">  	
 					  	</div>
 					  	
 					  	<table width="100%" class="table">

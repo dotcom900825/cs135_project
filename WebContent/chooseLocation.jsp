@@ -23,7 +23,7 @@
 					  	</div>
 					  	<div class="span9">     		      
 					  			<input id="FIRST_NAME" type="text"  readonly="readonly"  
-					  			<%out.print("value=" + util.firstName);%> 
+					  			value="<%out.print(util.firstName);%>"
 					  			maxlength="50" size="25" name="first_name">
 						</div>
 						
@@ -34,7 +34,7 @@
 					  	</div>
 					  	<div class="span9" style="margin-left:0px;">					      			      
 					  			<input id="LAST_NAME" type="text"  maxlength="50" size="25" readonly="readonly"  
-					  			<%out.print("value=" + util.lastName);%> 
+					  			value="<%out.print(util.lastName);%>" 
 					  			name="last_name">
 						</div>
 						
@@ -45,7 +45,7 @@
 					  	</div>
 					  	<div class="span9" style="margin-left:0px;">					      			      
 					  			<input id="MIDDLE_NAME" type="text" maxlength="50" size="25" readonly="readonly"  
-					  			<%out.print("value=" + util.middleName);%> 
+					  			value="<%out.print(util.middleName);%>" 
 					  			name="middle_name">
 						</div>
 						
@@ -56,11 +56,11 @@
 					  	</div>
 					  	<div class="span9" style="margin-left:0px;">					      			      
 									<input id="COUNTRY" type="text" maxlength="50" size="25" readonly="readonly"  
-									<%
+									value="<%
 										util.country = (request.getParameter("country").isEmpty() ? 
 														" ' ' " : request.getParameter("country"));
-										out.print("value=" + util.country);%> 
-											  			name="country">  	
+										out.print(util.country);%>" 
+											  			name="country">	
 					  	</div>
 					  	
 					  	<div class="span2">
@@ -70,10 +70,10 @@
 					  	</div>
 					  	<div class="span9" style="margin-left:0px;">					      			      
 					  			<input id="STREET_ADDRESS" type="text" maxlength="50" size="25" readonly="readonly"  
-					  			<%
+					  			value="<%
 					  				util.streetAddress = (request.getParameter("street_address").isEmpty() ?
 					  									" '' " : request.getParameter("street_address"));
-					  				out.print("value=" + util.streetAddress);%> 
+					  				out.print(util.streetAddress);%>" 
 					  			name="street_address">
 						</div>
 					  	
@@ -84,9 +84,9 @@
 					  	</div>
 					  	<div class="span9" style="margin-left:0px;">					      			      
 								<input id="CITY" type="text" maxlength="50" size="25" readonly="readonly"  
-								<%
+								value="<%
 									util.city = (request.getParameter("city").isEmpty() ? " ' ' " : request.getParameter("city"));
-									out.print("value=" + util.city);%> 
+									out.print(util.city);%>" 
 								name="city">  	
 					  	</div>
 					  	
@@ -100,9 +100,9 @@
 					  	</div>
 					  	<div class="span9" style="margin-left:0px;">					      			      
 								<input id="STATE" type="text" maxlength="50" size="25" readonly="readonly"  
-								<%
+								value="<%
 									util.states = (request.getParameter("state").isEmpty() ? " ' ' " : request.getParameter("state"));
-									out.print("value=" + util.states);%> 
+									out.print(util.states);%>" 
 								name="state">  	
 					  	</div>
 					  	<%
@@ -116,9 +116,9 @@
 					  	</div>
 					  	<div class="span8" style="margin-left:0px;">					      			      
 								<input id="ZIP_CODE" type="text" maxlength="50" size="25" readonly="readonly"  
-								<%
+								value="<%
 									util.zipCode = (request.getParameter("zip_code").isEmpty() ? " ' ' " : request.getParameter("zip_code"));
-									out.print("value=" + util.zipCode);%> 
+									out.print(util.zipCode);%>" 
 								name="zip_code">  	
 					  	</div>
 					  	

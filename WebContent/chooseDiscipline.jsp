@@ -23,7 +23,7 @@
 					  	</div>
 					  	<div class="span9">     		      
 					  			<input id="FIRST_NAME" type="text"  readonly="readonly"  
-					  			<%out.print("value=" + util.firstName);%> 
+					  			value="<%out.print(util.firstName);%>" 
 					  			maxlength="50" size="25" name="first_name">
 						</div>
 						
@@ -34,8 +34,7 @@
 					  	</div>
 					  	<div class="span9" style="margin-left:0px;">					      			      
 					  			<input id="LAST_NAME" type="text"  maxlength="50" size="25" readonly="readonly"  
-					  			<%out.print("value=" + util.lastName);%> 
-					  			name="last_name">
+					  			value="<%out.print(util.lastName);%>" name="last_name">
 						</div>
 						
 						<div class="span2">
@@ -45,8 +44,7 @@
 					  	</div>
 					  	<div class="span9" style="margin-left:0px;">					      			      
 					  			<input id="MIDDLE_NAME" type="text" maxlength="50" size="25" readonly="readonly"  
-					  			<%out.print("value=" + util.middleName);%> 
-					  			name="middle_name">
+					  			value="<%out.print(util.middleName);%>" name="middle_name">
 						</div>
 						
 						<div class="span2">
@@ -56,9 +54,7 @@
 					  	</div>
 					  	<div class="span9" style="margin-left:0px;">					      			      
 									<input id="COUNTRY" type="text" maxlength="50" size="25" readonly="readonly"  
-									<%
-											out.print("value=" + util.country);%> 
-											  			name="country">  	
+									value="<%out.print(util.country);%>" name="country">  	
 					  	</div>
 					  	
 					  	<div class="span2">
@@ -68,9 +64,7 @@
 					  	</div>
 					  	<div class="span9" style="margin-left:0px;">					      			      
 					  			<input id="STREET_ADDRESS" type="text" maxlength="50" size="25" readonly="readonly"  
-					  			<%
-					  					out.print("value=" + util.streetAddress);%> 
-					  			name="street_address">
+					  			value="<%out.print(util.streetAddress);%>" name="street_address">
 						</div>
 					  	
 					  	<div class="span2">
@@ -80,9 +74,7 @@
 					  	</div>
 					  	<div class="span9" style="margin-left:0px;">					      			      
 								<input id="CITY" type="text" maxlength="50" size="25" readonly="readonly"  
-								<%
-										out.print("value=" + util.city);%> 
-								name="city">  	
+								value="<%out.print(util.city);%>" name="city">  	
 					  	</div>
 					  	
 					  	<%
@@ -95,9 +87,7 @@
 					  	</div>
 					  	<div class="span9" style="margin-left:0px;">					      			      
 								<input id="STATE" type="text" maxlength="50" size="25" readonly="readonly"  
-								<%
-									out.print("value=" + util.states);%> 
-								name="state">  	
+								value="<%out.print(util.states);%>" name="state">  	
 					  	</div>
 					  	<%
 					  		}
@@ -110,8 +100,7 @@
 					  	</div>
 					  	<div class="span9" style="margin-left:0px;">					      			      
 								<input id="ZIP_CODE" type="text" maxlength="50" size="25" readonly="readonly"  
-								<%
-										out.print("value=" + util.zipCode);%> 
+								value="<%out.print(util.zipCode);%>" 
 								name="zip_code">  	
 					  	</div>
 					  	
@@ -122,16 +111,16 @@
 					  	</div>
 					  	<div class="span9" style="margin-left:0px;">					      			      
 									<input id="SCHOOL" type="text" maxlength="50" size="25" readonly="readonly"  
-									<%
+									value="<%
 										util.school = (request.getParameter("school").isEmpty() ? 
 														" ' ' " : request.getParameter("school"));
-										out.print("value=" + util.school);%> 
+										out.print(util.school);%> "
 											  			name="school">  	
 					  	</div>
 					  	
 					  	<div class="span2">
 					    	<label>
-					  			<span style="margin-left:100px;">Choose Discipline</span>
+					  			<span style="margin-left:100px;">Discipline</span>
 					  		</label>
 					  	</div>
 					  	<div class="span9" style="margin-left:0px;">					      			      
@@ -145,7 +134,7 @@
 											  			
 					  	</div>
 					  	
-					  	<div class="span2">
+					  	<div class="span3" style="margin-left:-85px">
 					    	<label>
 					  			<span style="margin-left:100px;">Expected time or awared time</span>
 					  		</label>
@@ -154,7 +143,7 @@
 							  	<input id="degree_time" type="text"  maxlength="50" size="25" name="degree_time">
 			     	  	</div>
 			     	  	
-			     	  	<div class="span2">
+			     	  	<div class="span3" style="margin-left:-85px">
 					    	<label>
 					  			<span style="margin-left:100px;">Expected or awarded GPA</span>
 					  		</label>
