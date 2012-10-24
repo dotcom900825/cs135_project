@@ -136,7 +136,7 @@
 							        //and the second entry being a vector of the universities as String's
 							        Vector tuple = (Vector)universities.get(row*3 + i);
 							        String state = (String)tuple.get(0);
-							        out.println("<th><a  href='localhost:8080/assignment1/chooseUniversity.jsp?place=" + state + " ' target='_blank'>" + state+"</a></th>");    
+							        out.println("<th><a  href='./chooseUniversity.jsp?place=" + state + " ' >" + state+"</a></th>");    
 							    }
 								 out.print("</tr>");
 							  }

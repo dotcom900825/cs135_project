@@ -65,7 +65,7 @@
 					  	</div>
 					  		
 						<div class="span8" style="margin-left:300px;">					      			      
-					  			<input type="submit" name="submit" value="Submit">						
+					  			<input type="submit" name="submit" value="Submit Personal Data">						
 					  	</div>
 					
 				   </div>

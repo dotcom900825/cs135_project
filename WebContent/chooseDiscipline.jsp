@@ -12,7 +12,7 @@
 		 <body>
 		  <fieldset style="background: none repeat scroll 0 0 #F9F8F3;">
 		  	<legend>Personal Information</legend>
-		  	<form method="POST" action="degree_location.jsp">	
+		  	<form method="POST" action="degree_list.jsp">	
 		  	<h3>Full legal Name</h3>		  
 		  	  <div class="container-fluid">
 				  <div class="row-fluid">
@@ -108,7 +108,7 @@
 					  			<span style="margin-left:100px;">Zip Code</span>
 					  		</label>
 					  	</div>
-					  	<div class="span8" style="margin-left:0px;">					      			      
+					  	<div class="span9" style="margin-left:0px;">					      			      
 								<input id="ZIP_CODE" type="text" maxlength="50" size="25" readonly="readonly"  
 								<%
 										out.print("value=" + util.zipCode);%> 
@@ -121,7 +121,7 @@
 					  		</label>
 					  	</div>
 					  	<div class="span9" style="margin-left:0px;">					      			      
-									<input id="COUNTRY" type="text" maxlength="50" size="25" readonly="readonly"  
+									<input id="SCHOOL" type="text" maxlength="50" size="25" readonly="readonly"  
 									<%
 										util.school = (request.getParameter("school").isEmpty() ? 
 														" ' ' " : request.getParameter("school"));
@@ -129,9 +129,55 @@
 											  			name="school">  	
 					  	</div>
 					  	
+					  	<div class="span2">
+					    	<label>
+					  			<span style="margin-left:100px;">Choose Discipline</span>
+					  		</label>
+					  	</div>
+					  	<div class="span9" style="margin-left:0px;">					      			      
+							<%
+						 	 support s = new support();   			   	
+						   	 String path1 = config.getServletContext().getRealPath("/support/disciplines.txt");
+						   	 Vector disciplines = s.getDisciplines(path1);
+						   	 for(int i=0; i<disciplines.size(); i++)
+						         out.println("<input type='radio' name='" + disciplines.get(i) + "'" + ">" + disciplines.get(i) + "<br>");
+							%> 
+											  			
+					  	</div>
+					  	
+					  	<div class="span2">
+					    	<label>
+					  			<span style="margin-left:100px;">Expected time or awared time</span>
+					  		</label>
+					  	</div>
+					  	<div class="span9" style="margin-left:0px;">					      			      
+							  	<input id="degree_time" type="text"  maxlength="50" size="25" name="degree_time">
+			     	  	</div>
+			     	  	
+			     	  	<div class="span2">
+					    	<label>
+					  			<span style="margin-left:100px;">Expected or awarded GPA</span>
+					  		</label>
+					  	</div>
+					  	<div class="span9" style="margin-left:0px;">					      			      
+							  	<input id="gpa" type="text"  maxlength="50" size="25" name="gpa">
+			     	  	</div>
+			     	  	
+			     	  	<div class="span2">
+					    	<label>
+					  			<span style="margin-left:100px;">Degree List</span>
+					  		</label>
+					  	</div>
+					  	<div class="span9" style="margin-left:0px;">					      			      
+							  	<select name="gpa">
+							  		<option value='BS'>BS</option>
+							  		<option value='MS'>MS</option>
+							  		<option value='PhD'>PhD</option>
+							  	</select>
+			     	  	</div>
 					  	
 						<div class="span8" style="margin-left:300px;">					      			      
-					  			<input type="submit" name="submit" value="Submit Address">						
+					  			<input type="submit" name="submit" value="Submit Degree">						
 					  	</div>
 					
 				   </div>
