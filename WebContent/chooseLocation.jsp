@@ -13,7 +13,7 @@
 		  <fieldset style="background: none repeat scroll 0 0 #F9F8F3;">
 		  	<legend>Personal Information</legend>
 		  	<form method="POST" action="degree_location.jsp">	
-		  	<h3>Full legal Name</h3>		  
+		  	<h3>Choose Location</h3>		  
 		  	  <div class="container-fluid">
 				  <div class="row-fluid">
 					    <div class="span2">

@@ -12,8 +12,8 @@
 		 <body>
 		  <fieldset style="background: none repeat scroll 0 0 #F9F8F3;">
 		  	<legend>Personal Information</legend>
-		  	<form method="POST" action="degree_list.jsp">	
-		  	<h3>Full legal Name</h3>		  
+		  	<form method="GET" action="degree_list.jsp">	
+		  	<h3>Choose Discipline</h3>		  
 		  	  <div class="container-fluid">
 				  <div class="row-fluid">
 					    <div class="span2">
@@ -112,9 +112,21 @@
 					  	<div class="span9" style="margin-left:0px;">					      			      
 									<input id="SCHOOL" type="text" maxlength="50" size="25" readonly="readonly"  
 									value="<%
-										util.school = (request.getParameter("school").isEmpty() ? 
-														" ' ' " : request.getParameter("school"));
-										out.print(util.school);%> "
+										
+										if(request.getParameter("school").isEmpty())
+										{
+											if(!request.getParameter("added_school_name").isEmpty())
+											{
+												//school_record.school_name = request.getParameter("added_school_name");
+												out.print(request.getParameter("added_school_name"));
+											}
+										}
+										else
+										{
+											//school_record.school_name  = (request.getParameter("school"));
+											out.print(request.getParameter("school"));
+										}
+										%> "
 											  			name="school">  	
 					  	</div>
 					  	
@@ -129,7 +141,7 @@
 						   	 String path1 = config.getServletContext().getRealPath("/support/disciplines.txt");
 						   	 Vector disciplines = s.getDisciplines(path1);
 						   	 for(int i=0; i<disciplines.size(); i++)
-						         out.println("<input type='radio' name='" + disciplines.get(i) + "'" + ">" + disciplines.get(i) + "<br>");
+						         out.println("<input type='radio' value='" + disciplines.get(i) + "'" + "name='discipline'" +  ">" + disciplines.get(i) + "<br>");
 							%> 
 											  			
 					  	</div>
@@ -158,7 +170,7 @@
 					  		</label>
 					  	</div>
 					  	<div class="span9" style="margin-left:0px;">					      			      
-							  	<select name="gpa">
+							  	<select name="degree">
 							  		<option value='BS'>BS</option>
 							  		<option value='MS'>MS</option>
 							  		<option value='PhD'>PhD</option>

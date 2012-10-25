@@ -108,7 +108,6 @@
 					  	<table width="100%" class="table">
 							  <%
 							  String place = request.getParameter("place");
-							  out.println(place);
 							 	 support s = new support();   			   	
 							   	String path1 = config.getServletContext().getRealPath("/support/universities.txt");
 							    //getCountriesAndStates returns a vector of the countries to be used for choosing citizenship
@@ -145,8 +144,19 @@
 						            							  							           			   							  
 							  %>
 						</table>
+						
+						<div class="span2">
+					    	<label>
+					  			<span style="margin-left:100px;">Other University</span>
+					  		</label>
+					  	</div>
+					  	<div class="span8" style="margin-left:0px;">					      			      
+								<input id="ZIP_CODE" type="text" maxlength="50" size="25"   
+								value="Please enter the university's name" name="added_school_name">  	
+					  	</div>
+					  	
 						<div class="span8" style="margin-left:300px;">					      			      
-					  			<input type="submit" name="submit" value="Submit Address">						
+					  			<input type="submit" name="submit" value="Submit Other university">						
 					  	</div>
 					
 				   </div>
