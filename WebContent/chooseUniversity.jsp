@@ -1,4 +1,4 @@
-<%@ page language="java" import="support.*, java.util.*" contentType="text/html; charset=GB18030"
+<%@ page language="java" import="support.*, java.util.* ,java.sql.*" contentType="text/html; charset=GB18030"
     pageEncoding="GB18030"%>
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
@@ -8,11 +8,35 @@
  	<script src="js/bootstrap.min.js"></script>
  	<script src="http://code.jquery.com/jquery-latest.js"></script>
  </head>
+ <%
+	 String place = request.getParameter("place");
+
+	 
+	 session.setAttribute("place", place);
+
+    
+	String first_name = session.getAttribute("first_name").toString();
+	String last_name = session.getAttribute("last_name").toString();
+	String middle_name = session.getAttribute("middle_name").toString();
+	String country_name = session.getAttribute("country").toString();
+    String street_name = session.getAttribute("street_address").toString();
+    String city = session.getAttribute("city").toString();
+    String zip_code = session.getAttribute("zip_code").toString();
+    String state = "";
+    try
+    {
+   	  state = session.getAttribute("state").toString();
+    }
+    catch(Exception ex)
+    {
+    	state = "";
+    }
+ %>
  <!-- This page contains some errors, it can not show the value inputed from index.jsp  -->
 		 <body>
 		  <fieldset style="background: none repeat scroll 0 0 #F9F8F3;">
 		  	<legend>Personal Information</legend>
-		  	<form method="POST" action="degree_location.jsp">	
+		  	<form method="POST" action="chooseDiscipline.jsp">	
 		  	<h3>Full legal Name</h3>		  
 		  	  <div class="container-fluid">
 				  <div class="row-fluid">
@@ -23,7 +47,7 @@
 					  	</div>
 					  	<div class="span9">     		      
 					  			<input id="FIRST_NAME" type="text"  readonly="readonly"  
-					  			value="<%out.print(util.firstName);%>" 
+					  			value="<%out.print(first_name);%>" 
 					  			maxlength="50" size="25" name="first_name">
 						</div>
 						
@@ -34,7 +58,7 @@
 					  	</div>
 					  	<div class="span9" style="margin-left:0px;">					      			      
 					  			<input id="LAST_NAME" type="text"  maxlength="50" size="25" readonly="readonly"  
-					  			value="<%out.print(util.lastName);%>" name="last_name">
+					  			value="<%out.print(last_name);%>" name="last_name">
 						</div>
 						
 						<div class="span2">
@@ -44,7 +68,7 @@
 					  	</div>
 					  	<div class="span9" style="margin-left:0px;">					      			      
 					  			<input id="MIDDLE_NAME" type="text" maxlength="50" size="25" readonly="readonly"  
-					  			value="<%out.print(util.middleName);%>" name="middle_name">
+					  			value="<%out.print(middle_name);%>" name="middle_name">
 						</div>
 						
 						<div class="span2">
@@ -54,7 +78,7 @@
 					  	</div>
 					  	<div class="span9" style="margin-left:0px;">					      			      
 									<input id="COUNTRY" type="text" maxlength="50" size="25" readonly="readonly"  
-									value="<%out.print(util.country);%>" name="country">  	
+									value="<%out.print(country_name);%>" name="country">  	
 					  	</div>
 					  	
 					  	<div class="span2">
@@ -64,7 +88,7 @@
 					  	</div>
 					  	<div class="span9" style="margin-left:0px;">					      			      
 					  			<input id="STREET_ADDRESS" type="text" maxlength="50" size="25" readonly="readonly"  
-					  			value="<%out.print(util.streetAddress);%>" 
+					  			value="<%out.print(street_name);%>" 
 					  			name="street_address">
 						</div>
 					  	
@@ -75,11 +99,11 @@
 					  	</div>
 					  	<div class="span9" style="margin-left:0px;">					      			      
 								<input id="CITY" type="text" maxlength="50" size="25" readonly="readonly"  
-								value="<%out.print(util.city);%>" name="city">  	
+								value="<%out.print(city);%>" name="city">  	
 					  	</div>
 					  	
 					  	<%
-					  		if(request.getParameter("state") != null){
+					  		if(!state.isEmpty()){
 					  	%>
 					  	<div class="span2">
 					    	<label>
@@ -88,7 +112,7 @@
 					  	</div>
 					  	<div class="span9" style="margin-left:0px;">					      			      
 								<input id="STATE" type="text" maxlength="50" size="25" readonly="readonly"  
-								value="<%out.print(util.states);%>" 
+								value="<%out.print(state);%>" 
 								name="state">  	
 					  	</div>
 					  	<%
@@ -102,34 +126,81 @@
 					  	</div>
 					  	<div class="span8" style="margin-left:0px;">					      			      
 								<input id="ZIP_CODE" type="text" maxlength="50" size="25" readonly="readonly"  
-								value="<%out.print(util.zipCode);%>" name="zip_code">  	
+								value="<%out.print(zip_code);%>" name="zip_code">  	
 					  	</div>
 					  	
 					  	<table width="100%" class="table">
 							  <%
-							  String place = request.getParameter("place");
-							 	 support s = new support();   			   	
-							   	String path1 = config.getServletContext().getRealPath("/support/universities.txt");
-							    //getCountriesAndStates returns a vector of the countries to be used for choosing citizenship
-							    Vector universities = s.getUniversities(path1);
-							 	for(int i = 0; i < universities.size(); i ++)
+							  
+							    Connection connection;   
+							    Vector school_list = new Vector();
+							    try 
+								{
+									Class.forName("org.postgresql.Driver"); 
+								} 
+								catch (ClassNotFoundException e)
+								{ 
+									System.out.println("Where is your PostgreSQL JDBC Driver? "
+											+ "Include in your library path!");
+									e.printStackTrace();
+									return;
+								} 
+								 connection = null;
+						 
+								try 
+								{
+
+									connection = DriverManager.getConnection(
+											"jdbc:postgresql://127.0.0.1:5432/grad_admin", "postgres",
+											"4742488");
+								} 
+								catch (SQLException e) 
+								{
+									e.printStackTrace();
+									return;
+								}
+								if (connection != null) 
+								{
+									try
+									{				
+										java.sql.Statement st = connection.createStatement();
+										
+
+							           String sql = "select cs_id from countries_and_states where country_state ='"+ place + "'";
+																
+							             ResultSet rs =  st.executeQuery(sql);
+							               rs.next();
+							        	   int cs_id = rs.getInt(1);
+					
+							        	   sql = "select university from universities where country_state_id ='"+ cs_id + "'";
+							        	   rs =  st.executeQuery(sql);
+							        	   
+							        	   while(rs.next())
+							        	   {
+							        		   String school_name = rs.getString(1);
+							        		   school_list.add(school_name);
+							        	   }
+							            st.close();
+							            connection.close();
+									}
+									catch(Exception ex)
+									{
+										
+									}
+								} else {
+									System.out.println("Failed to make connection!");
+								}
+							   					    										    
+
+							 	for(int row = 0; row < school_list.size() / 3; row ++)
 							 	{
-							 		  Vector tuple = (Vector)universities.get(i);
-							 	      String state = (String)tuple.get(0);
-							 	      if(state.equals(place))
-							 	      {
-							 	    	 Vector u = (Vector)tuple.get(1);
-									         for(int row = 0; row < u.size()/3; row++)
-									         {
-									        	 out.print("<tr>");
-									        	 for(int column = 0; column < 3; column++)
-									        	 {
-									        		String school = (String)u.get(row * 3 + column);
-									 		        out.println("<th><a href='./chooseDiscipline.jsp?school=" + school + " '>" + school+"</a></th>");    
-									        	 }
-									        	 out.print("</tr>");
-									         }
-							 	      }
+									  out.print("<tr>");
+									  for(int column = 0; column < 3; column++)
+									   {
+									       String school = (String)school_list.get(row * 3 + column);
+									 	   out.println("<th><a href='./chooseDiscipline.jsp?school=" + school + " '>" + school+"</a></th>");    
+									   }
+									  out.print("</tr>");									         				 	      
 							 	}
 							   	//Vector tuple = (Vector)universities.get(universities.indexOf(place));
 							 	/*Vector u = (Vector)tuple.get(1);

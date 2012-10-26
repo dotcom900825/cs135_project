@@ -8,7 +8,46 @@
  	<script src="js/bootstrap.min.js"></script>
  	<script src="http://code.jquery.com/jquery-latest.js"></script>
  </head>
- <!-- This page contains some errors, it can not show the value inputed from index.jsp  -->
+ <%
+	String first_name = session.getAttribute("first_name").toString();
+	String last_name = session.getAttribute("last_name").toString();
+	String middle_name = session.getAttribute("middle_name").toString();
+	String country = session.getAttribute("country").toString();
+	String street_address;
+	String city;
+	String zip_code;
+	String state;
+	
+	
+	 if( request.getParameter("action") == null ||request.getParameter("action").toString().isEmpty())
+	 {
+		 street_address = request.getParameter("street_address");
+	     city = request.getParameter("city");
+	     zip_code = request.getParameter("zip_code");
+	     state = request.getParameter("state");
+	     
+	    session.setAttribute("street_address", street_address);
+	    session.setAttribute("city", city);
+	    session.setAttribute("zip_code", zip_code);
+	    session.setAttribute("state", state);
+	 }
+	 else
+	 {
+		 street_address = session.getAttribute("street_address").toString();
+	 	 city = session.getAttribute("city").toString();
+	 	 zip_code = session.getAttribute("zip_code").toString();
+	     try
+	     {
+	    	  state = session.getAttribute("state").toString();
+	     }
+	     catch(Exception ex)
+	     {
+	     	state = "";
+	     }
+	 }
+	
+ 
+ %>
 		 <body>
 		  <fieldset style="background: none repeat scroll 0 0 #F9F8F3;">
 		  	<legend>Personal Information</legend>
@@ -23,7 +62,7 @@
 					  	</div>
 					  	<div class="span9">     		      
 					  			<input id="FIRST_NAME" type="text"  readonly="readonly"  
-					  			value="<%out.print(util.firstName);%>"
+					  			value="<%out.print(first_name);%>"
 					  			maxlength="50" size="25" name="first_name">
 						</div>
 						
@@ -34,7 +73,7 @@
 					  	</div>
 					  	<div class="span9" style="margin-left:0px;">					      			      
 					  			<input id="LAST_NAME" type="text"  maxlength="50" size="25" readonly="readonly"  
-					  			value="<%out.print(util.lastName);%>" 
+					  			value="<%out.print(last_name);%>" 
 					  			name="last_name">
 						</div>
 						
@@ -45,7 +84,7 @@
 					  	</div>
 					  	<div class="span9" style="margin-left:0px;">					      			      
 					  			<input id="MIDDLE_NAME" type="text" maxlength="50" size="25" readonly="readonly"  
-					  			value="<%out.print(util.middleName);%>" 
+					  			value="<%out.print(middle_name);%>" 
 					  			name="middle_name">
 						</div>
 						
@@ -56,10 +95,7 @@
 					  	</div>
 					  	<div class="span9" style="margin-left:0px;">					      			      
 									<input id="COUNTRY" type="text" maxlength="50" size="25" readonly="readonly"  
-									value="<%
-										util.country = (request.getParameter("country").isEmpty() ? 
-														" ' ' " : request.getParameter("country"));
-										out.print(util.country);%>" 
+									value="<%out.print(country);%>" 
 											  			name="country">	
 					  	</div>
 					  	
@@ -70,10 +106,7 @@
 					  	</div>
 					  	<div class="span9" style="margin-left:0px;">					      			      
 					  			<input id="STREET_ADDRESS" type="text" maxlength="50" size="25" readonly="readonly"  
-					  			value="<%
-					  				util.streetAddress = (request.getParameter("street_address").isEmpty() ?
-					  									" '' " : request.getParameter("street_address"));
-					  				out.print(util.streetAddress);%>" 
+					  			value="<%out.print(street_address);%>" 
 					  			name="street_address">
 						</div>
 					  	
@@ -84,9 +117,7 @@
 					  	</div>
 					  	<div class="span9" style="margin-left:0px;">					      			      
 								<input id="CITY" type="text" maxlength="50" size="25" readonly="readonly"  
-								value="<%
-									util.city = (request.getParameter("city").isEmpty() ? " ' ' " : request.getParameter("city"));
-									out.print(util.city);%>" 
+								value="<%out.print(city);%>" 
 								name="city">  	
 					  	</div>
 					  	
@@ -100,9 +131,7 @@
 					  	</div>
 					  	<div class="span9" style="margin-left:0px;">					      			      
 								<input id="STATE" type="text" maxlength="50" size="25" readonly="readonly"  
-								value="<%
-									util.states = (request.getParameter("state").isEmpty() ? " ' ' " : request.getParameter("state"));
-									out.print(util.states);%>" 
+								value="<%out.print(state);%>" 
 								name="state">  	
 					  	</div>
 					  	<%
@@ -116,9 +145,7 @@
 					  	</div>
 					  	<div class="span8" style="margin-left:0px;">					      			      
 								<input id="ZIP_CODE" type="text" maxlength="50" size="25" readonly="readonly"  
-								value="<%
-									util.zipCode = (request.getParameter("zip_code").isEmpty() ? " ' ' " : request.getParameter("zip_code"));
-									out.print(util.zipCode);%>" 
+								value="<%out.print(zip_code);%>" 
 								name="zip_code">  	
 					  	</div>
 					  	
@@ -135,8 +162,8 @@
 							        //each entry in the universities vector is a tuple with the first entry being the country/state
 							        //and the second entry being a vector of the universities as String's
 							        Vector tuple = (Vector)universities.get(row*3 + i);
-							        String state = (String)tuple.get(0);
-							        out.println("<th><a  href='./chooseUniversity.jsp?place=" + state + " ' >" + state+"</a></th>");    
+							        String states = (String)tuple.get(0);
+							        out.println("<th><a  href='./chooseUniversity.jsp?place=" + states + " ' >" + states +"</a></th>");    
 							    }
 								 out.print("</tr>");
 							  }
@@ -144,9 +171,7 @@
 							   							  
 							  %>
 						</table>
-						<div class="span8" style="margin-left:300px;">					      			      
-					  			<input type="submit" name="submit" value="Submit Address">						
-					  	</div>
+					
 					
 				   </div>
 			   </div>

@@ -3,54 +3,28 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
  <head>
- 	<title>Degree List</title>
+ 	<title>Specialization</title>
  	<link href="${pageContext.request.contextPath}/css/bootstrap.min.css" rel="stylesheet">
  	<script src="js/bootstrap.min.js"></script>
  	<script src="http://code.jquery.com/jquery-latest.js"></script>
  </head>
 <body>
 <%
-String first_name = session.getAttribute("first_name").toString();
-String last_name = session.getAttribute("last_name").toString();
-String middle_name = session.getAttribute("middle_name").toString();
-String country_name = session.getAttribute("country").toString();
+	String first_name = session.getAttribute("first_name").toString();
+	String last_name = session.getAttribute("last_name").toString();
+	String middle_name = session.getAttribute("middle_name").toString();
+	String country_name = session.getAttribute("country").toString();
 	String street_name = session.getAttribute("street_address").toString();
-String city = session.getAttribute("city").toString();
+	String city = session.getAttribute("city").toString();
 	String zip_code = session.getAttribute("zip_code").toString();
 	String state = "";
-try
-{
-	  state = session.getAttribute("state").toString();
-}
-catch(Exception ex)
-{
-	state = "";
-}
-	String school_name = request.getParameter("school");
-	String gpa = request.getParameter("gpa");
-	String degree_time = request.getParameter("degree_time");
-	String discipline = request.getParameter("discipline");
-	String degree = request.getParameter("degree");
-
-	list_reader dbConnecter = new list_reader();
-	if(school_name != null)
-	{
-		try
-		{
-			dbConnecter.storeDegreeInfo(last_name,middle_name,first_name,school_name, degree, discipline, degree_time, gpa);
-		}
-		catch(Exception ex)
-		{
-			ex.printStackTrace();
-		}
-	}
 	try
 	{
-		dbConnecter.deleteSchool(request.getParameter("del_school"));
+		  state = session.getAttribute("state").toString();
 	}
 	catch(Exception ex)
 	{
-		ex.printStackTrace();
+		state = "";
 	}
 	// keep this code, in case we want to allow user to remodify his form
 	//school_record.GPA = request.getParameter("gpa");
@@ -63,7 +37,7 @@ catch(Exception ex)
 <fieldset style="background: none repeat scroll 0 0 #F9F8F3;">
 		  	<legend>Personal Info</legend>
 		  		
-		  	<h3>Degree List</h3>		  
+		  	<h3>Specialization</h3>		  
 		  	  <div class="container-fluid">
 				  <div class="row-fluid">
 					    <div class="span2">
@@ -195,8 +169,7 @@ catch(Exception ex)
 							try
 							{				
 								java.sql.Statement st = connection.createStatement();
-					            String sql = "select * from degree_list where last_name ='" + last_name + 
-					            			"' and middle_name = '" + middle_name + "' and first_name = '" + first_name + "'";
+					            String sql = "select * from degree_list";
 					            ResultSet rs =  st.executeQuery(sql);
 					           while(rs.next())
 					           {
@@ -232,15 +205,9 @@ catch(Exception ex)
 						  			<span style="margin-left:100px;">School Name</span>
 						  		</label>
 					  		</div>
-						  	<div class="span9" style="margin-top:20px; margin-left:0px">
-						  	<input  type="text"  size="25" readonly="readonly" 
-						  			value="<%=((degreeInfo)degree_list.get(i)).school_name%>">	
-						  		<form method="GET" action="degree_list.jsp">				      			      
-						  			
-						  			<input  type="hidden"  maxlength="50" size="25"  
-						  			value="<%=((degreeInfo)degree_list.get(i)).sID%>" name="del_school">
-						  				<input type="submit" value="Delete Degree" />
-						  		</form>
+						  	<div class="span9" style="margin-top:20px; margin-left:0px">	     			      
+						  			<input  type="text"  maxlength="50" size="25" readonly="readonly" 
+						  			value="<%=((degreeInfo)degree_list.get(i)).school_name%>">
 						  			
 							</div>
 							
@@ -283,23 +250,37 @@ catch(Exception ex)
 						  			<input  type="text"  maxlength="50" size="25" readonly="readonly"  
 						  			value="<%=((degreeInfo)degree_list.get(i)).degree_time%>">
 							</div>
-							<br />
+							
 					  	<%
 							} 
-						%>
-						<form method="GET" action="chooseLocation.jsp">
-							<div class="span8" style="margin-left:300px;">		
-									<input type="hidden" name="action" value="more">			      			      
-						  			<input type="submit" name="submit" value="Submit Next Degree">						
-						  	</div>
-						</form>
-						
-						<!-- Sharon, please insert action code here! -->
-						<form method="GET" action="specialization.jsp">
+					  	support s = new support();   	
+							   	
+							   	String path1 = config.getServletContext().getRealPath("/support/specializations.txt");
+							    //getCountriesAndStates returns a vector of the countries to be used for choosing citizenship
+							    Vector specializations = s.getSpecializations(path1); 
+							    %>
+							    
+					<form method="GET" action="verification.jsp">
+						<div class="span2" style="margin-top:50px">
+					    	<label>
+					  			<span style="margin-left:100px;">Specialization</span>
+					  		</label>
+					  	</div>
+					  	<div class="span9" style="margin-top:50px; margin-left:0px;">
+							    	<%
+							    	out.println("<select name=\"specialization\">");
+							    	for(int i=0; i<specializations.size(); i++)
+								        out.println("<option" + " value=" + (String)specializations.get(i) + ">" + (String) specializations.get(i) + "</option>");
+									out.println("</select> </div>");
+							    
+								%>
+						</div>
+					
 							<div class="span8" style="margin-left:300px;">					      			      
-						  			<input type="submit" name="submit" value="Done">						
+						  			<input type="submit" name="submit" value="Submit">						
 						  	</div>
-					  	</form>
+					</form>	
+						
 				   </div>
 			   </div>
 			

@@ -11,7 +11,7 @@
 		 <body>
 		  <fieldset style="background: none repeat scroll 0 0 #F9F8F3;">
 		  	<legend>Personal Information</legend>
-		  	<form method="POST" action="address.jsp">	
+		  	<form method="GET" action="address.jsp">	
 		  	<h3>Full legal Name</h3>		  
 		  	  <div class="container-fluid">
 				  <div class="row-fluid">
@@ -57,9 +57,10 @@
 							    Vector<CountryState> countries_and_states = s.getCountriesAndStates(path1); 
 							    
 							    for(int i=51; i<countries_and_states.size(); i++)
-							        out.println("<option" + " value=" + (String) ((CountryState)countries_and_states.get(i)).countryStateName + ">" + (String) ((CountryState)countries_and_states.get(i)).countryStateName + "</option>");
-							    							
-								%>
+							    {       							
+								%><option value="<%=(String) ((CountryState)countries_and_states.get(i)).countryStateName%>">  <%=(String) ((CountryState)countries_and_states.get(i)).countryStateName%></option>
+								
+								<%} %>
 
 							</select>				  	
 					  	</div>

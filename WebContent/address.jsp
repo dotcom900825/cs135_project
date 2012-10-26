@@ -8,13 +8,26 @@
  	<script src="js/bootstrap.min.js"></script>
  	<script src="http://code.jquery.com/jquery-latest.js"></script>
  </head>
+ 	<%
+ 			String first_name = request.getParameter("first_name");
+ 			String last_name = request.getParameter("last_name");
+ 			String middle_name = request.getParameter("middle_name");
+ 			String country = request.getParameter("country");
+ 			
+ 			session.setAttribute("first_name", first_name);
+ 			session.setAttribute("last_name", last_name);
+ 			session.setAttribute("middle_name", middle_name);
+ 			session.setAttribute("country", country);
+ 			
+ 	%>
 		 <body>
 		  <fieldset style="background: none repeat scroll 0 0 #F9F8F3;">
 		  	<legend>Personal Information</legend>
-		  	<form method="POST" action="chooseLocation.jsp">	
+		  	<form method="GET" action="chooseLocation.jsp">	
 		  	<h3>Choose Address</h3>		  
 		  	  <div class="container-fluid">
 				  <div class="row-fluid">
+					    <!-- First Name input form -->
 					    <div class="span2">
 					    	<label>
 					  			<span style="margin-left:130px;">First Name</span>
@@ -23,10 +36,8 @@
 					  	<div class="span9">     		      
 					  			<input id="FIRST_NAME" type="text"  readonly="readonly" 
 					  			value="<%
-					  				util.firstName = (request.getParameter("first_name").isEmpty() ? 
-					  						" '' " : request.getParameter("first_name"));
-					  				
-					  				out.print(util.firstName);		
+					  								  				
+					  				out.print(first_name);		
 					  			%>"
 					  			 maxlength="50" size="25" name="first_name">
 						</div>
@@ -38,10 +49,7 @@
 					  	</div>
 					  	<div class="span9" style="margin-left:0px;">					      			      
 					  			<input id="LAST_NAME" type="text"  maxlength="50" size="25" readonly="readonly" 
-					  			value="<%
-					  				util.lastName = (request.getParameter("last_name").isEmpty() ? 
-					  						" '' " : request.getParameter("last_name"));
-					  				out.print(util.lastName);%>" 
+					  			value="<%out.print(last_name);%>" 
 					  			name="last_name">
 						</div>
 						
@@ -52,12 +60,7 @@
 					  	</div>
 					  	<div class="span9" style="margin-left:0px;">					      			      
 					  			<input id="MIDDLE_NAME" type="text" maxlength="50" size="25" readonly="readonly"  
-					  			value="<%
-					  				util.middleName = (request.getParameter("middle_name").isEmpty() ? 
-				  						" '' " : request.getParameter("middle_name"));
-					  				out.print(util.middleName);
-					  				
-					  			%>"
+					  			value="<%out.print(middle_name);%>"
 					  			name="middle_name">
 						</div>
 						
@@ -68,12 +71,7 @@
 					  	</div>
 					  	<div class="span9" style="margin-left:0px;">					      			      
 								<input id="country" type="text" maxlength="50" size="25" readonly="readonly"  
-								value="<%
-									util.country = (request.getParameter("country").isEmpty() ? 
-				  						" '' " : request.getParameter("country"));
-									out.print(util.country);
-									
-								%>" name="country">  	
+								value="<%out.print(country);%>" name="country">  	
 					  	</div>
 					  			
 					  			
@@ -101,7 +99,7 @@
 							    //getCountriesAndStates returns a vector of the countries to be used for choosing citizenship
 							    Vector<CountryState> countries_and_states = s.getCountriesAndStates(path1); 
 							    
-							    if(request.getParameter("country").equals("United")){%>
+							    if(country.equals("United States")){%>
 						<div class="span2">
 					    	<label>
 					  			<span style="margin-left:100px;">State</span>
@@ -111,7 +109,8 @@
 							    	<%
 							    	out.println("<select name=\"state\">");
 							    	for(int i=0; i<51; i++)
-								        out.println("<option" + " value=" + (String) ((CountryState)countries_and_states.get(i)).countryStateName + ">" + (String) ((CountryState)countries_and_states.get(i)).countryStateName + "</option>");
+								        out.println("<option" + " value=" + (String) ((CountryState)countries_and_states.get(i)).countryStateName
+								        			+ ">" + (String) ((CountryState)countries_and_states.get(i)).countryStateName + "</option>");
 									out.println("</select> </div>");
 							    }
 								%>

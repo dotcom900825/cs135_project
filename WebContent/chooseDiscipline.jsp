@@ -1,4 +1,4 @@
-<%@ page language="java" import="support.*, java.util.*" contentType="text/html; charset=GB18030"
+<%@ page language="java" import="support.*, java.util.*, java.sql.*" contentType="text/html; charset=GB18030"
     pageEncoding="GB18030"%>
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
@@ -8,6 +8,100 @@
  	<script src="js/bootstrap.min.js"></script>
  	<script src="http://code.jquery.com/jquery-latest.js"></script>
  </head>
+ <%
+ 	
+ 	String school_name = request.getParameter("school");
+    String school = "";
+ 	if(school_name == null || school_name.isEmpty())
+ 	{
+ 		if(!request.getParameter("added_school_name").isEmpty())
+ 		{
+ 			school = request.getParameter("added_school_name");
+ 		}
+ 	}
+ 	
+ 	else
+ 	{
+ 		school = school_name;
+ 	}
+ 	session.setAttribute("school", school);
+ 	
+ 	String first_name = session.getAttribute("first_name").toString();
+	String last_name = session.getAttribute("last_name").toString();
+	String middle_name = session.getAttribute("middle_name").toString();
+	String country_name = session.getAttribute("country").toString();
+ 	String street_name = session.getAttribute("street_address").toString();
+	String city = session.getAttribute("city").toString();
+ 	String zip_code = session.getAttribute("zip_code").toString();
+ 	String place = session.getAttribute("place").toString();
+ 	String state = "";
+    try
+    {
+   	  state = session.getAttribute("state").toString();
+    }
+    catch(Exception ex)
+    {
+    	state = "";
+    }
+    
+	  
+    Connection connection;   
+    Vector school_list = new Vector();
+    try 
+	{
+		Class.forName("org.postgresql.Driver"); 
+	} 
+	catch (ClassNotFoundException e)
+	{ 
+		System.out.println("Where is your PostgreSQL JDBC Driver? "
+				+ "Include in your library path!");
+		e.printStackTrace();
+		return;
+	} 
+	 connection = null;
+
+	try 
+	{
+
+		connection = DriverManager.getConnection(
+				"jdbc:postgresql://127.0.0.1:5432/grad_admin", "postgres",
+				"4742488");
+	} 
+	catch (SQLException e) 
+	{
+		e.printStackTrace();
+		return;
+	}
+	if (connection != null) 
+	{
+		try
+		{				
+			java.sql.Statement st = connection.createStatement();
+			
+
+           String sql = "select cs_id from countries_and_states where country_state ='"+ place + "'";
+									
+             ResultSet rs =  st.executeQuery(sql);
+               rs.next();
+        	   int cs_id = rs.getInt(1);
+        	   out.print(cs_id + school);
+				 sql = "insert into universities(country_state_id, university)" +
+					"values ('" + cs_id + "', '" + school+ "')";
+				st.executeUpdate(sql);
+            st.close();
+            connection.close();
+		}
+		catch(Exception ex)
+		{
+			
+		}
+	} else {
+		System.out.println("Failed to make connection!");
+	}
+	   					    										    
+    							  							           			   							  
+  %>
+ 
  <!-- This page contains some errors, it can not show the value inputed from index.jsp  -->
 		 <body>
 		  <fieldset style="background: none repeat scroll 0 0 #F9F8F3;">
@@ -23,7 +117,7 @@
 					  	</div>
 					  	<div class="span9">     		      
 					  			<input id="FIRST_NAME" type="text"  readonly="readonly"  
-					  			value="<%out.print(util.firstName);%>" 
+					  			value="<%out.print(first_name);%>" 
 					  			maxlength="50" size="25" name="first_name">
 						</div>
 						
@@ -34,7 +128,7 @@
 					  	</div>
 					  	<div class="span9" style="margin-left:0px;">					      			      
 					  			<input id="LAST_NAME" type="text"  maxlength="50" size="25" readonly="readonly"  
-					  			value="<%out.print(util.lastName);%>" name="last_name">
+					  			value="<%out.print(last_name);%>" name="last_name">
 						</div>
 						
 						<div class="span2">
@@ -44,7 +138,7 @@
 					  	</div>
 					  	<div class="span9" style="margin-left:0px;">					      			      
 					  			<input id="MIDDLE_NAME" type="text" maxlength="50" size="25" readonly="readonly"  
-					  			value="<%out.print(util.middleName);%>" name="middle_name">
+					  			value="<%out.print(middle_name);%>" name="middle_name">
 						</div>
 						
 						<div class="span2">
@@ -54,7 +148,7 @@
 					  	</div>
 					  	<div class="span9" style="margin-left:0px;">					      			      
 									<input id="COUNTRY" type="text" maxlength="50" size="25" readonly="readonly"  
-									value="<%out.print(util.country);%>" name="country">  	
+									value="<%out.print(country_name);%>" name="country">  	
 					  	</div>
 					  	
 					  	<div class="span2">
@@ -64,7 +158,7 @@
 					  	</div>
 					  	<div class="span9" style="margin-left:0px;">					      			      
 					  			<input id="STREET_ADDRESS" type="text" maxlength="50" size="25" readonly="readonly"  
-					  			value="<%out.print(util.streetAddress);%>" name="street_address">
+					  			value="<%out.print(street_name);%>" name="street_address">
 						</div>
 					  	
 					  	<div class="span2">
@@ -74,11 +168,11 @@
 					  	</div>
 					  	<div class="span9" style="margin-left:0px;">					      			      
 								<input id="CITY" type="text" maxlength="50" size="25" readonly="readonly"  
-								value="<%out.print(util.city);%>" name="city">  	
+								value="<%out.print(city);%>" name="city">  	
 					  	</div>
 					  	
 					  	<%
-					  		if(request.getParameter("state") != null){
+					  		if(!state.isEmpty()){
 					  	%>
 					  	<div class="span2">
 					    	<label>
@@ -87,7 +181,7 @@
 					  	</div>
 					  	<div class="span9" style="margin-left:0px;">					      			      
 								<input id="STATE" type="text" maxlength="50" size="25" readonly="readonly"  
-								value="<%out.print(util.states);%>" name="state">  	
+								value="<%out.print(state);%>" name="state">  	
 					  	</div>
 					  	<%
 					  		}
@@ -100,7 +194,7 @@
 					  	</div>
 					  	<div class="span9" style="margin-left:0px;">					      			      
 								<input id="ZIP_CODE" type="text" maxlength="50" size="25" readonly="readonly"  
-								value="<%out.print(util.zipCode);%>" 
+								value="<%out.print(zip_code);%>" 
 								name="zip_code">  	
 					  	</div>
 					  	
@@ -111,23 +205,7 @@
 					  	</div>
 					  	<div class="span9" style="margin-left:0px;">					      			      
 									<input id="SCHOOL" type="text" maxlength="50" size="25" readonly="readonly"  
-									value="<%
-										
-										if(request.getParameter("school").isEmpty())
-										{
-											if(!request.getParameter("added_school_name").isEmpty())
-											{
-												//school_record.school_name = request.getParameter("added_school_name");
-												out.print(request.getParameter("added_school_name"));
-											}
-										}
-										else
-										{
-											//school_record.school_name  = (request.getParameter("school"));
-											out.print(request.getParameter("school"));
-										}
-										%> "
-											  			name="school">  	
+									value="<%out.print(school);%> "name="school">  	
 					  	</div>
 					  	
 					  	<div class="span2">

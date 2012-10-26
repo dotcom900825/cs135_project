@@ -47,7 +47,9 @@ public class list_reader
 		}
 	}
 	
-	public void storeDegreeInfo(String sName, String degree, String discipline, String degree_time, String gpa)
+	public void storeDegreeInfo(String last_name, String middle_name, String first_name,
+							    String sName, String degree, String discipline, String degree_time, 
+							    String gpa)
 	{
 		if (connection != null) 
 		{
@@ -55,9 +57,10 @@ public class list_reader
 			{
 				
 				java.sql.Statement st = connection.createStatement();
-	            String sql = "insert into degree_list(school_name, discipline, gpa, degree,degree_time)" +
-	            		"values ('" + sName +"', '" + discipline + "' ,'" + gpa + "' ,'" + degree + "' ,'"
-	            		+ degree_time + "')";
+	            String sql = "insert into degree_list(last_name, middle_name, first_name, school_name, discipline, gpa, degree,degree_time)" +
+	            		"values ('" + last_name + "', '" + middle_name + "', '" + first_name + "', '" + 
+	            				 sName +"', '" + discipline + "' ,'" + gpa + "' ,'" + degree 
+	            				 + "' ,'"+ degree_time + "')";
 	            st.executeUpdate(sql);
 	          
 	            st.close();
@@ -72,6 +75,30 @@ public class list_reader
 		}
 	}
 	
+	public void storeNewSchool(int country_state_id, String school_name)
+{
+		if (connection != null) 
+		{
+			try
+			{	
+				java.sql.Statement st = connection.createStatement();
+				String sql = "insert into universities(country_state_id, school_name)" +
+					"values ('" + country_state_id + "', '" + school_name + "')";
+				st.executeUpdate(sql);
+				
+				st.close();
+				connection.close();
+			}
+			catch(Exception ex)
+			{
+			
+			}
+		} 
+		else 
+		{
+			System.out.println("Failed to make connection!");
+		}
+}
 	public void deleteSchool(String schoolID)
 	{
 		if (connection != null) 
