@@ -47,7 +47,7 @@ public class list_reader
 		}
 	}
 	
-	public void storeDegreeInfo(String last_name, String middle_name, String first_name,
+	public void storeDegreeInfo(String last_name, String middle_name, String first_name, String country, String state, String city, String zip_code,
 							    String sName, String degree, String discipline, String degree_time, 
 							    String gpa)
 	{
@@ -57,8 +57,8 @@ public class list_reader
 			{
 				
 				java.sql.Statement st = connection.createStatement();
-	            String sql = "insert into degree_list(last_name, middle_name, first_name, school_name, discipline, gpa, degree,degree_time)" +
-	            		"values ('" + last_name + "', '" + middle_name + "', '" + first_name + "', '" + 
+	            String sql = "insert into degree_list(last_name, middle_name, first_name, country, state, city, zip_code, school_name, discipline, gpa, degree,degree_time)" +
+	            		"values ('" + last_name + "', '" + middle_name + "', '" + first_name + "', '" + country + "', '" + state + "', '" + city + "', '" + zip_code + "', '" +
 	            				 sName +"', '" + discipline + "' ,'" + gpa + "' ,'" + degree 
 	            				 + "' ,'"+ degree_time + "')";
 	            st.executeUpdate(sql);

@@ -136,68 +136,12 @@
 					  	</div>
 					  	<br/>
 					  	<br/>
-					    <%
-					    Connection connection;   
-					    Vector degree_list = new Vector();
-					    try 
-						{
-							Class.forName("org.postgresql.Driver"); 
-						} 
-						catch (ClassNotFoundException e)
-						{ 
-							System.out.println("Where is your PostgreSQL JDBC Driver? "
-									+ "Include in your library path!");
-							e.printStackTrace();
-							return;
-						} 
-						 connection = null;
-				 
-						try 
-						{
-
-							connection = DriverManager.getConnection(
-									"jdbc:postgresql://127.0.0.1:5432/grad_admin", "postgres",
-									"4742488");
-						} 
-						catch (SQLException e) 
-						{
-							e.printStackTrace();
-							return;
-						}
-						if (connection != null) 
-						{
-							try
-							{				
-								java.sql.Statement st = connection.createStatement();
-					            String sql = "select * from degree_list";
-					            ResultSet rs =  st.executeQuery(sql);
-					           while(rs.next())
-					           {
-					        	   String sID = rs.getString(1);
-					        	   String schoolName1 = rs.getString(5);
-					        	   String discipline1 = rs.getString(6);
-					        	   String gpa1 = rs.getString(7);
-					        	   String degree1 = rs.getString(8);
-					        	   String degree_time1 = rs.getString(9);
-					        	   degreeInfo dInfo = new degreeInfo(sID, schoolName1,discipline1,gpa1,degree1,degree_time1);
-					        	   degree_list.add(dInfo);
-					           }
-					            st.close();
-					            connection.close();
-							}
-							catch(Exception ex)
-							{
-								
-							}
-						} else {
-							System.out.println("Failed to make connection!");
-						}
-					   					    										    
-					    %>
-					  	
-					  	<%
-					  		for(int i = 0; i < degree_list.size(); i++)
-					  		{
+					  <%
+					    	Set degree_list;										
+							degree_list = ((HashMap)session.getAttribute("degree_list")).keySet();					   					    										    
+				  		
+					  		for(Object key : degree_list)	
+					  	{
 					  	%>
 					  		
 							<div class="span2" style="margin-top:20px">
@@ -205,9 +149,15 @@
 						  			<span style="margin-left:100px;">School Name</span>
 						  		</label>
 					  		</div>
-						  	<div class="span9" style="margin-top:20px; margin-left:0px">	     			      
-						  			<input  type="text"  maxlength="50" size="25" readonly="readonly" 
-						  			value="<%=((degreeInfo)degree_list.get(i)).school_name%>">
+						  	<div class="span9" style="margin-top:20px; margin-left:0px">
+						  	<input  type="text"  size="25" readonly="readonly" 
+						  			value="<%=((school_record)((HashMap)session.getAttribute("degree_list")).get(key)).school_name%>">	
+						  		<form method="GET" action="degree_list.jsp">				      			      
+						  			
+						  			<input  type="hidden"  maxlength="50" size="25"  
+						  			value="<%=key%>" name="del_school">
+						  				<input type="submit" value="Delete Degree" />
+						  		</form>
 						  			
 							</div>
 							
@@ -218,7 +168,7 @@
 					  		</div>
 						  	<div class="span9" style="margin-left:0px;">					      			      
 						  			<input  type="text"  maxlength="50" size="25" readonly="readonly"  
-						  			value="<%=((degreeInfo)degree_list.get(i)).discipline%>">
+						  			value="<%=((school_record)((HashMap)session.getAttribute("degree_list")).get(key)).discipline%>">
 							</div>
 							
 							<div class="span2">
@@ -228,7 +178,7 @@
 					  		</div>
 						  	<div class="span9" style="margin-left:0px;">					      			      
 						  			<input  type="text"  maxlength="50" size="25" readonly="readonly"  
-						  			value="<%=((degreeInfo)degree_list.get(i)).GPA%>">
+						  			value="<%=((school_record)((HashMap)session.getAttribute("degree_list")).get(key)).GPA%>">
 							</div>
 							
 							<div class="span2">
@@ -238,7 +188,7 @@
 					  		</div>
 						  	<div class="span9" style="margin-left:0px;">					      			      
 						  			<input  type="text"  maxlength="50" size="25" readonly="readonly"  
-						  			value="<%=((degreeInfo)degree_list.get(i)).degree%>">
+						  			value="<%=((school_record)((HashMap)session.getAttribute("degree_list")).get(key)).degree%>">
 							</div>
 							
 							<div class="span2">
@@ -248,11 +198,11 @@
 					  		</div>
 						  	<div class="span9" style="margin-left:0px;">					      			      
 						  			<input  type="text"  maxlength="50" size="25" readonly="readonly"  
-						  			value="<%=((degreeInfo)degree_list.get(i)).degree_time%>">
+						  			value="<%=((school_record)((HashMap)session.getAttribute("degree_list")).get(key)).degree_time%>">
 							</div>
-							
+							<br />
 					  	<%
-							} 
+							} 							 
 					  	support s = new support();   	
 							   	
 							   	String path1 = config.getServletContext().getRealPath("/support/specializations.txt");

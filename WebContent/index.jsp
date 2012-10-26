@@ -8,6 +8,10 @@
  	<script src="js/bootstrap.min.js"></script>
  	<script src="http://code.jquery.com/jquery-latest.js"></script>
  </head>
+ <%
+ 	HashMap degree_list = new HashMap();
+ 	session.setAttribute("degree_list", degree_list);
+ %>
 		 <body>
 		  <fieldset style="background: none repeat scroll 0 0 #F9F8F3;">
 		  	<legend>Personal Information</legend>

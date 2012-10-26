@@ -10,48 +10,47 @@
  </head>
 <body>
 <%
-String first_name = session.getAttribute("first_name").toString();
-String last_name = session.getAttribute("last_name").toString();
-String middle_name = session.getAttribute("middle_name").toString();
-String country_name = session.getAttribute("country").toString();
+	String first_name = session.getAttribute("first_name").toString();
+	String last_name = session.getAttribute("last_name").toString();
+	String middle_name = session.getAttribute("middle_name").toString();
+	String country_name = session.getAttribute("country").toString();
 	String street_name = session.getAttribute("street_address").toString();
-String city = session.getAttribute("city").toString();
+	String city = session.getAttribute("city").toString();
 	String zip_code = session.getAttribute("zip_code").toString();
 	String state = "";
-try
-{
-	  state = session.getAttribute("state").toString();
-}
-catch(Exception ex)
-{
-	state = "";
-}
-	String school_name = request.getParameter("school");
-	String gpa = request.getParameter("gpa");
-	String degree_time = request.getParameter("degree_time");
-	String discipline = request.getParameter("discipline");
-	String degree = request.getParameter("degree");
+	try
+	{
+		  state = session.getAttribute("state").toString();
+	}
+	catch(Exception ex)
+	{
+		state = "";
+	}
 
-	list_reader dbConnecter = new list_reader();
-	if(school_name != null)
+	if(request.getParameter("del_school") != null && !request.getParameter("del_school").isEmpty())
 	{
 		try
-		{
-			dbConnecter.storeDegreeInfo(last_name,middle_name,first_name,school_name, degree, discipline, degree_time, gpa);
+		{  
+			((HashMap)session.getAttribute("degree_list")).remove((Long.decode(request.getParameter("del_school").toString())));
 		}
 		catch(Exception ex)
 		{
 			ex.printStackTrace();
 		}
 	}
-	try
+	else
 	{
-		dbConnecter.deleteSchool(request.getParameter("del_school"));
+		long sID = (int)(Math.random()*500);
+		String school_name = request.getParameter("school");
+		String gpa = request.getParameter("gpa");
+		String degree_time = request.getParameter("degree_time");
+		String discipline = request.getParameter("discipline");
+		String degree = request.getParameter("degree");
+
+		school_record sRecord = new school_record(school_name, discipline,gpa,degree,degree_time);
+		((HashMap)session.getAttribute("degree_list")).put(sID, sRecord);
 	}
-	catch(Exception ex)
-	{
-		ex.printStackTrace();
-	}
+	
 	// keep this code, in case we want to allow user to remodify his form
 	//school_record.GPA = request.getParameter("gpa");
 	//school_record.degree_time = request.getParameter("degree_time");
@@ -163,68 +162,11 @@ catch(Exception ex)
 					  	<br/>
 					  	<br/>
 					    <%
-					    Connection connection;   
-					    Vector degree_list = new Vector();
-					    try 
-						{
-							Class.forName("org.postgresql.Driver"); 
-						} 
-						catch (ClassNotFoundException e)
-						{ 
-							System.out.println("Where is your PostgreSQL JDBC Driver? "
-									+ "Include in your library path!");
-							e.printStackTrace();
-							return;
-						} 
-						 connection = null;
-				 
-						try 
-						{
-
-							connection = DriverManager.getConnection(
-									"jdbc:postgresql://127.0.0.1:5432/grad_admin", "postgres",
-									"4742488");
-						} 
-						catch (SQLException e) 
-						{
-							e.printStackTrace();
-							return;
-						}
-						if (connection != null) 
-						{
-							try
-							{				
-								java.sql.Statement st = connection.createStatement();
-					            String sql = "select * from degree_list where last_name ='" + last_name + 
-					            			"' and middle_name = '" + middle_name + "' and first_name = '" + first_name + "'";
-					            ResultSet rs =  st.executeQuery(sql);
-					           while(rs.next())
-					           {
-					        	   String sID = rs.getString(1);
-					        	   String schoolName1 = rs.getString(5);
-					        	   String discipline1 = rs.getString(6);
-					        	   String gpa1 = rs.getString(7);
-					        	   String degree1 = rs.getString(8);
-					        	   String degree_time1 = rs.getString(9);
-					        	   degreeInfo dInfo = new degreeInfo(sID, schoolName1,discipline1,gpa1,degree1,degree_time1);
-					        	   degree_list.add(dInfo);
-					           }
-					            st.close();
-					            connection.close();
-							}
-							catch(Exception ex)
-							{
-								
-							}
-						} else {
-							System.out.println("Failed to make connection!");
-						}
-					   					    										    
-					    %>
-					  	
-					  	<%
-					  		for(int i = 0; i < degree_list.size(); i++)
-					  		{
+					    	Set degree_list;										
+							degree_list = ((HashMap)session.getAttribute("degree_list")).keySet();					   					    										    
+				  		
+					  		for(Object key : degree_list)	
+					  	{
 					  	%>
 					  		
 							<div class="span2" style="margin-top:20px">
@@ -234,11 +176,11 @@ catch(Exception ex)
 					  		</div>
 						  	<div class="span9" style="margin-top:20px; margin-left:0px">
 						  	<input  type="text"  size="25" readonly="readonly" 
-						  			value="<%=((degreeInfo)degree_list.get(i)).school_name%>">	
+						  			value="<%=((school_record)((HashMap)session.getAttribute("degree_list")).get(key)).school_name%>">	
 						  		<form method="GET" action="degree_list.jsp">				      			      
 						  			
 						  			<input  type="hidden"  maxlength="50" size="25"  
-						  			value="<%=((degreeInfo)degree_list.get(i)).sID%>" name="del_school">
+						  			value="<%=key%>" name="del_school">
 						  				<input type="submit" value="Delete Degree" />
 						  		</form>
 						  			
@@ -251,7 +193,7 @@ catch(Exception ex)
 					  		</div>
 						  	<div class="span9" style="margin-left:0px;">					      			      
 						  			<input  type="text"  maxlength="50" size="25" readonly="readonly"  
-						  			value="<%=((degreeInfo)degree_list.get(i)).discipline%>">
+						  			value="<%=((school_record)((HashMap)session.getAttribute("degree_list")).get(key)).discipline%>">
 							</div>
 							
 							<div class="span2">
@@ -261,7 +203,7 @@ catch(Exception ex)
 					  		</div>
 						  	<div class="span9" style="margin-left:0px;">					      			      
 						  			<input  type="text"  maxlength="50" size="25" readonly="readonly"  
-						  			value="<%=((degreeInfo)degree_list.get(i)).GPA%>">
+						  			value="<%=((school_record)((HashMap)session.getAttribute("degree_list")).get(key)).GPA%>">
 							</div>
 							
 							<div class="span2">
@@ -271,7 +213,7 @@ catch(Exception ex)
 					  		</div>
 						  	<div class="span9" style="margin-left:0px;">					      			      
 						  			<input  type="text"  maxlength="50" size="25" readonly="readonly"  
-						  			value="<%=((degreeInfo)degree_list.get(i)).degree%>">
+						  			value="<%=((school_record)((HashMap)session.getAttribute("degree_list")).get(key)).degree%>">
 							</div>
 							
 							<div class="span2">
@@ -281,7 +223,7 @@ catch(Exception ex)
 					  		</div>
 						  	<div class="span9" style="margin-left:0px;">					      			      
 						  			<input  type="text"  maxlength="50" size="25" readonly="readonly"  
-						  			value="<%=((degreeInfo)degree_list.get(i)).degree_time%>">
+						  			value="<%=((school_record)((HashMap)session.getAttribute("degree_list")).get(key)).degree_time%>">
 							</div>
 							<br />
 					  	<%
