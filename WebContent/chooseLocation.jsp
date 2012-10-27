@@ -18,7 +18,8 @@
 	String zip_code;
 	String state;
 	
-	
+ 	session.setAttribute("degree_flag", "true");
+ 	session.setAttribute("discipline_flag", "true");
 	 if( request.getParameter("action") == null ||request.getParameter("action").toString().isEmpty())
 	 {
 		 street_address = request.getParameter("street_address");

@@ -1,4 +1,4 @@
-<%@ page language="java" import="support.*, java.util.*, java.sql.*" contentType="text/html; charset=GB18030"
+	<%@ page language="java" import="support.*, java.util.*, java.sql.*" contentType="text/html; charset=GB18030"
     pageEncoding="GB18030"%>
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
@@ -208,7 +208,7 @@
 									value="<%out.print(school);%> "name="school">  	
 					  	</div>
 					  	
-					  	<div class="span2">
+					  <div class="span2">
 					    	<label>
 					  			<span style="margin-left:100px;">Discipline</span>
 					  		</label>
@@ -220,7 +220,10 @@
 						   	 Vector disciplines = s.getDisciplines(path1);
 						   	 for(int i=0; i<disciplines.size(); i++)
 						         out.println("<input type='radio' value='" + disciplines.get(i) + "'" + "name='discipline'" +  ">" + disciplines.get(i) + "<br>");
-							%> 
+						   	 out.println("or custom discipline: ");
+						   	%>
+							<input id="DISCIPLINE" type="text" maxlength="50" size="25" name="new_discipline"> 
+						
 											  			
 					  	</div>
 					  	

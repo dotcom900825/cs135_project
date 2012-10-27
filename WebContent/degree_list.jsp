@@ -26,7 +26,20 @@
 	{
 		state = "";
 	}
-
+	String degree_flag = session.getAttribute("degree_flag").toString();
+	
+	
+	if(request.getParameter("new_discipline") != null && !request.getParameter("new_discipline").isEmpty())
+	{
+		if(session.getAttribute("discipline_flag") == "true")
+		{
+    	list_reader conn = new list_reader();
+    	conn.storeDiscipline(request.getParameter("new_discipline"));
+    	session.setAttribute("discipline_flag", "false");
+		}
+    	
+	}
+	
 	if(request.getParameter("del_school") != null && !request.getParameter("del_school").isEmpty())
 	{
 		try
@@ -38,17 +51,27 @@
 			ex.printStackTrace();
 		}
 	}
-	else
+	else if(degree_flag == "true")
 	{
 		long sID = (int)(Math.random()*500);
 		String school_name = request.getParameter("school");
 		String gpa = request.getParameter("gpa");
 		String degree_time = request.getParameter("degree_time");
-		String discipline = request.getParameter("discipline");
+		String discipline;
+		if(request.getParameter("discipline") != null)
+		{
+		 discipline = request.getParameter("discipline");
+		}
+		else
+		{
+			discipline = request.getParameter("new_discipline");
+		}
+		out.print(discipline);
 		String degree = request.getParameter("degree");
 
 		school_record sRecord = new school_record(school_name, discipline,gpa,degree,degree_time);
 		((HashMap)session.getAttribute("degree_list")).put(sID, sRecord);
+		session.setAttribute("degree_flag", "false");
 	}
 	
 	// keep this code, in case we want to allow user to remodify his form

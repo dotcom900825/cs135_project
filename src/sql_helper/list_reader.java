@@ -75,6 +75,32 @@ public class list_reader
 		}
 	}
 	
+	
+	public void storeDiscipline(String discipline)
+	{
+		if (connection != null) 
+		{
+			try
+			{
+		
+			java.sql.Statement st = connection.createStatement();
+			String sql = "insert into disciplines(discipline)" +
+				"values ('" + discipline +"')";
+			st.executeUpdate(sql);
+			System.out.print("succefully added");
+			st.close();
+			connection.close();
+			}
+			catch(Exception ex)
+			{
+				System.out.print("error!");
+			}
+		}
+		else 
+		{
+			System.out.println("Failed to make connection!");
+		}
+	}
 	public void storeNewSchool(int country_state_id, String school_name)
 {
 		if (connection != null) 
