@@ -41,7 +41,7 @@
 		String gpa = ((school_record)((HashMap)session.getAttribute("degree_list")).get(key)).GPA;
 		String degree = ((school_record)((HashMap)session.getAttribute("degree_list")).get(key)).degree;
 		String degree_time = ((school_record)((HashMap)session.getAttribute("degree_list")).get(key)).degree_time;
-		dbConnector.storeDegreeInfo(last_name, middle_name, first_name, country_name, state, city, zip_code, sName, degree, discipline, degree_time, gpa);
+		//dbConnector.storeDegreeInfo(last_name, middle_name, first_name, country_name, state, city, zip_code, sName, degree, discipline, degree_time, gpa);
 	}
 		dbConnector.closeConnection();
 		}

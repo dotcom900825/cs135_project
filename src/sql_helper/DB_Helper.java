@@ -57,7 +57,7 @@ public class DB_Helper
 		{
 			//User may need to change the database configuration here
 			connection = DriverManager.getConnection( 
-					"jdbc:postgresql://127.0.0.1:5432/grad_admin", "postgres",
+					"jdbc:postgresql://127.0.0.1:5432/grad_admin_2th", "postgres",
 					"4742488");
 		} 
 		catch (SQLException e) 
@@ -76,9 +76,8 @@ public class DB_Helper
 		* Parameters:  All the parameters corresbonding to the entry in the db's table
 		* Return: void
 		*/
-	public void storeDegreeInfo(String last_name, String middle_name, String first_name, String country,
-								String state, String city, String zip_code,String sName, String degree, 
-								String discipline, String degree_time, String gpa)
+	public void storeApplicant(String last_name, String middle_name, String first_name, String country,
+								String state, String city, String zip_code, String specialization, long unique_id)
 	{
 		if (connection != null) 
 		{
@@ -89,8 +88,7 @@ public class DB_Helper
 	            String sql = "insert into degree_list(last_name, middle_name, first_name, country, " +
 	            		"state, city, zip_code, school_name, discipline, gpa, degree,degree_time)" +
 	            		"values ('" + last_name + "', '" + middle_name + "', '" + first_name + "', '" + country + "', '" + state + "', '" + city + "', '" + zip_code + "', '" +
-	            				 sName +"', '" + discipline + "' ,'" + gpa + "' ,'" + degree 
-	            				 + "' ,'"+ degree_time + "')";
+	            				 specialization + "' ,'"+ unique_id + "')";
 	            st.executeUpdate(sql);
 	          
 	            st.close();
