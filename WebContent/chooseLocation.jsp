@@ -1,4 +1,4 @@
-<%@ page language="java" import="support.*, java.util.*" contentType="text/html; charset=GB18030"
+<%@ page language="java" import="support.*, java.util.*, sql_helper.*" contentType="text/html; charset=GB18030"
     pageEncoding="GB18030"%>
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
@@ -9,6 +9,7 @@
  	<script src="http://code.jquery.com/jquery-latest.js"></script>
  </head>
  <%
+ 	//First fetch all the needed value from session
 	String first_name = session.getAttribute("first_name").toString();
 	String last_name = session.getAttribute("last_name").toString();
 	String middle_name = session.getAttribute("middle_name").toString();
@@ -18,8 +19,15 @@
 	String zip_code;
 	String state;
 	
+	//set session for further use
  	session.setAttribute("degree_flag", "true");
  	session.setAttribute("discipline_flag", "true");
+			
+	/*Here we check whether this page is loaded from address.jsp or degree_list.jsp
+	if the page is loaded from address.jps then we fetch the parameters passed by get
+	else if the page is loaded from degree_list.jsp then we fetch the parameters throught
+	session
+	*/
 	 if( request.getParameter("action") == null ||request.getParameter("action").toString().isEmpty())
 	 {
 		 street_address = request.getParameter("street_address");
@@ -150,26 +158,27 @@
 								name="zip_code">  	
 					  	</div>
 					  	
+					  	
 					  	<table width="100%" class="table">
 							  <%
-							 	 support s = new support();   			   	
-							   	String path1 = config.getServletContext().getRealPath("/support/universities.txt");
-							    //getCountriesAndStates returns a vector of the countries to be used for choosing citizenship
-							    Vector universities = s.getUniversities(path1);
-							  for(int row = 0; row < universities.size()/3; row++)
+							  	//fetch all the country or states that has universities, reference 
+							  	//the given support.jsp file
+							  DB_Helper dbConnector = new DB_Helper();
+							  Vector place = dbConnector.fetchPlaceWithSchool();
+							  Iterator it = place.iterator();
+							  out.print("<tr>");
+							  while(it.hasNext())
 							  {
-								 out.print("<tr>");
-							    for (int i=0; i<3; i++){
-							        //each entry in the universities vector is a tuple with the first entry being the country/state
-							        //and the second entry being a vector of the universities as String's
-							        Vector tuple = (Vector)universities.get(row*3 + i);
-							        String states = (String)tuple.get(0);
-							        out.println("<th><a  href='./chooseUniversity.jsp?place=" + states + " ' >" + states +"</a></th>");    
-							    }
-								 out.print("</tr>");
-							  }
-							              
-							   							  
+								  int i = 0;
+								  while( i < 3 && it.hasNext() )
+								  {
+									  i++;
+									  String location = it.next().toString();
+							      	  out.println("<th><a  href='./chooseUniversity.jsp?place=" 
+									  + location + " ' >" + location +"</a></th>");    
+								  }
+								  out.print("</tr>");
+							  }						 	    							 	    							             							   							  
 							  %>
 						</table>
 					

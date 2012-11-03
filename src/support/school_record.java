@@ -1,5 +1,13 @@
 package support;
 
+/*
+* Name: Yu Xia student
+* Date: Oct 20, 2012
+* File: school_record.java
+* Source of Help: slides on lecture
+*
+* This class is data helper class, abstraction of degree_info
+*/
 public class school_record {
 	public school_record(String sName, String disci, String gpa, String degree, String dTime)
 	{

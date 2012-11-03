@@ -10,6 +10,7 @@
  </head>
 <body>
 <%
+	//fetch all the parameters from session
 	String first_name = session.getAttribute("first_name").toString();
 	String last_name = session.getAttribute("last_name").toString();
 	String middle_name = session.getAttribute("middle_name").toString();
@@ -26,13 +27,6 @@
 	{
 		state = "";
 	}
-	// keep this code, in case we want to allow user to remodify his form
-	//school_record.GPA = request.getParameter("gpa");
-	//school_record.degree_time = request.getParameter("degree_time");
-	//school_record.discipline = request.getParameter("discipline");
-	//school_record.degree = request.getParameter("degree");
-	
-
 %>
 <fieldset style="background: none repeat scroll 0 0 #F9F8F3;">
 		  	<legend>Personal Info</legend>
@@ -217,10 +211,10 @@
 					  		</label>
 					  	</div>
 					  	<div class="span9" style="margin-top:50px; margin-left:0px;">
-							    	<%
+							    	<%//print out the specialization from text file
 							    	out.println("<select name=\"specialization\">");
 							    	for(int i=0; i<specializations.size(); i++)
-								        out.println("<option" + " value=" + (String)specializations.get(i) + ">" + (String) specializations.get(i) + "</option>");
+								        out.println("<option" + " value='" + (String)specializations.get(i) + "'>" + (String) specializations.get(i) + "</option>");
 									out.println("</select> </div>");
 							    
 								%>

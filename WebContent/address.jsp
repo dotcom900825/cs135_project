@@ -1,14 +1,52 @@
-<%@ page language="java" import="support.*, java.util.*" contentType="text/html; charset=GB18030"
+<%@ page language="java" import="support.*,sql_helper.*, java.util.*" contentType="text/html; charset=GB18030"
     pageEncoding="GB18030"%>
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
  <head>
  	<title>Address</title>
- 	<link href="${pageContext.request.contextPath}/css/bootstrap.min.css" rel="stylesheet">
+ 	<link href="${pageContext.request.contextPath}/css/bootstrap.css" rel="stylesheet">
  	<script src="js/bootstrap.min.js"></script>
  	<script src="http://code.jquery.com/jquery-latest.js"></script>
+    <script src="http://ajax.aspnetcdn.com/ajax/jquery.validate/1.9/jquery.validate.min.js"></script>
+ 	
+ 	<script text="javascript">
+ 	(function($,W,D)
+ 			{
+ 			    var JQUERY4U = {};
+ 			 
+ 			    JQUERY4U.UTIL =
+ 			    {
+ 			        setupFormValidation: function()
+ 			        {
+ 			            //form validation rules
+ 			            $("#register-form").validate({
+ 			                rules: {
+ 			                    street_address: "required",
+ 			                    city: "required",
+ 			                    zip_code: "required"
+ 			                },
+ 			                messages: {
+ 			                    street_address: "Please enter your street address",
+ 			                    city: "Please enter your city",
+ 			                    zip_code: "please enter your zip code"
+ 			                },
+ 			                submitHandler: function(form) {
+ 			                    form.submit();
+ 			                }
+ 			            });
+ 			        }
+ 			    }
+ 			 
+ 			    //when the dom has loaded setup form validation rules
+ 			    $(D).ready(function($) {
+ 			        JQUERY4U.UTIL.setupFormValidation();
+ 			    });
+ 			 
+ 			})(jQuery, window, document);
+ 	</script>
  </head>
  	<%
+ 		//fetch all the parameters passed to this page and then save them into session
  			String first_name = request.getParameter("first_name");
  			String last_name = request.getParameter("last_name");
  			String middle_name = request.getParameter("middle_name");
@@ -23,11 +61,12 @@
 		 <body>
 		  <fieldset style="background: none repeat scroll 0 0 #F9F8F3;">
 		  	<legend>Personal Information</legend>
-		  	<form method="GET" action="chooseLocation.jsp">	
+		  	<form method="POST" action="chooseLocation.jsp" id="register-form" novalidate="novalidate">	
 		  	<h3>Choose Address</h3>		  
 		  	  <div class="container-fluid">
 				  <div class="row-fluid">
-					    <!-- First Name input form -->
+					    
+					    <!-- First Name form -->
 					    <div class="span2">
 					    	<label>
 					  			<span style="margin-left:130px;">First Name</span>
@@ -42,6 +81,7 @@
 					  			 maxlength="50" size="25" name="first_name">
 						</div>
 						
+						<!-- Last Name form -->
 						<div class="span2">
 					    	<label>
 					  			<span style="margin-left:100px;">Last Name</span>
@@ -53,6 +93,7 @@
 					  			name="last_name">
 						</div>
 						
+						<!-- Middle Name form -->
 						<div class="span2">
 					    	<label>
 					  			<span style="margin-left:100px;">Middle Initial</span>
@@ -64,6 +105,7 @@
 					  			name="middle_name">
 						</div>
 						
+						<!-- Country form -->
 						<div class="span2">
 					    	<label>
 					  			<span style="margin-left:100px;">Country</span>
@@ -75,31 +117,34 @@
 					  	</div>
 					  			
 					  			
-					  			<!-- Hey your code should starts from here -->
+					  	<!-- Street Name form -->
 					  	<div class="span2">
 					    	<label>
 					  			<span style="margin-left:100px;">Street Address</span>
 					  		</label>
 					  	</div>
-					  	<div class="span9" style="margin-left:0px;">					      			      
+					  	<div class="span9 fieldgroup" style="margin-left:0px;">					      			      
 					  			<input id="STREET_ADDRESS" type="text"  maxlength="50" size="25" name="street_address">
 						</div>
+						
+						<!-- City Name form -->
 						<div class="span2">
 					    	<label>
 					  			<span style="margin-left:100px;">City</span>
 					  		</label>
 					  	</div>
-					  	<div class="span9" style="margin-left:0px;">					      			      
+					  	<div class="span9 fieldgroup" style="margin-left:0px;">					      			      
 					  			<input id="CITY" type="text"  maxlength="50" size="25" name="city">
 						</div>
-					  						      			      
-					  				<%support s = new support();   	
-							   	
-							   	String path1 = config.getServletContext().getRealPath("/support/countries_and_states.txt");
-							    //getCountriesAndStates returns a vector of the countries to be used for choosing citizenship
-							    Vector<CountryState> countries_and_states = s.getCountriesAndStates(path1); 
+					  	
+					  	<!-- State form. We need to check whether the user's country is US or not-->		      			      
+					  	<%
+					  	DB_Helper dbHelper = new DB_Helper();
+					    Vector<String> states = dbHelper.fetchStates();
+					
 							    
-							    if(country.equals("United States")){%>
+							    if(country.equals("United States"))
+							   {%>
 						<div class="span2">
 					    	<label>
 					  			<span style="margin-left:100px;">State</span>
@@ -109,24 +154,21 @@
 							    	<%
 							    	out.println("<select name=\"state\">");
 							    	for(int i=0; i<51; i++)
-								        out.println("<option" + " value=" + (String) ((CountryState)countries_and_states.get(i)).countryStateName
-								        			+ ">" + (String) ((CountryState)countries_and_states.get(i)).countryStateName + "</option>");
+								        out.println("<option" + " value=" + (String) (states.get(i))
+								        			+ ">" + (String) ((states.get(i)) + "</option>"));
 									out.println("</select> </div>");
 							    }
-								%>
-
-
-					  	
+									%>
+									
+						<!-- Zip Code form -->		  	
 					  	<div class="span2">
 					  		<label>
 					  			<span style="margin-left:100px;">Zip Code</span>
 					  		</label>
 					  	</div>
-					  	<div class="span10" style="margin-left:0px;">					      			      
+					  	<div class="span10 fieldgroup" style="margin-left:0px;">					      			      
 					  			<input id="ZIP_CODE" type="text"  maxlength="50" size="25" name="zip_code">
 						</div>
-					  	<!-- Ends here -->
-
 
 						<div class="span8" style="margin-left:300px;">					      			      
 					  			<input type="submit" name="submit" value="Submit Address">						

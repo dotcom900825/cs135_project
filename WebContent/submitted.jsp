@@ -8,6 +8,7 @@
 </head>
 
 <%
+	//fetch all the parameters
 		String first_name = session.getAttribute("first_name").toString();
 		String last_name = session.getAttribute("last_name").toString();
 		String middle_name = session.getAttribute("middle_name").toString();
@@ -20,36 +21,35 @@
 		
 		try
 		{
-			  state = session.getAttribute("state").toString();
+	  state = session.getAttribute("state").toString();
 		}
 		catch(Exception ex)
 		{
-			state = "";
+	state = "";
 		}
-		list_reader dbConnector = new list_reader();
+		// use list_reader to store all the degree_list into the database
+		DB_Helper dbConnector = new DB_Helper();
 		try
 		{
-			Set degree_list;										
-			degree_list = ((HashMap)session.getAttribute("degree_list")).keySet();					   					    										    
+	Set degree_list;										
+	degree_list = ((HashMap)session.getAttribute("degree_list")).keySet();					   					    										    
 		
-				for(Object key : degree_list)	
-			{
-				String sName = ((school_record)((HashMap)session.getAttribute("degree_list")).get(key)).school_name;
-				String discipline = ((school_record)((HashMap)session.getAttribute("degree_list")).get(key)).discipline;
-				String gpa = ((school_record)((HashMap)session.getAttribute("degree_list")).get(key)).GPA;
-				String degree = ((school_record)((HashMap)session.getAttribute("degree_list")).get(key)).degree;
-				String degree_time = ((school_record)((HashMap)session.getAttribute("degree_list")).get(key)).degree_time;
-				dbConnector.storeDegreeInfo(last_name, middle_name, first_name, country_name, state, city, zip_code, sName, degree, discipline, degree_time, gpa);
-				
-			}
+		for(Object key : degree_list)	
+	{
+		String sName = ((school_record)((HashMap)session.getAttribute("degree_list")).get(key)).school_name;
+		String discipline = ((school_record)((HashMap)session.getAttribute("degree_list")).get(key)).discipline;
+		String gpa = ((school_record)((HashMap)session.getAttribute("degree_list")).get(key)).GPA;
+		String degree = ((school_record)((HashMap)session.getAttribute("degree_list")).get(key)).degree;
+		String degree_time = ((school_record)((HashMap)session.getAttribute("degree_list")).get(key)).degree_time;
+		dbConnector.storeDegreeInfo(last_name, middle_name, first_name, country_name, state, city, zip_code, sName, degree, discipline, degree_time, gpa);
+	}
+		dbConnector.closeConnection();
 		}
 		
 		catch(Exception ex)
 		{
-			
+	
 		}
-		
-
 %>
 <body>
 Thank you, your application has been submitted.

@@ -1,4 +1,4 @@
-	<%@ page language="java" import="support.*, java.util.*, java.sql.*" contentType="text/html; charset=GB18030"
+	<%@ page language="java" import="support.*, java.util.*, sql_helper.*, java.sql.*" contentType="text/html; charset=GB18030"
     pageEncoding="GB18030"%>
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
@@ -9,14 +9,17 @@
  	<script src="http://code.jquery.com/jquery-latest.js"></script>
  </head>
  <%
- 	
+ 	//get school name, whether from existed one from selected hyperlink
+ 	//or the new one from input box
  	String school_name = request.getParameter("school");
     String school = "";
+    String new_added_school = null;
  	if(school_name == null || school_name.isEmpty())
  	{
  		if(!request.getParameter("added_school_name").isEmpty())
  		{
  			school = request.getParameter("added_school_name");
+ 			new_added_school = school;
  		}
  	}
  	
@@ -44,62 +47,64 @@
     	state = "";
     }
     
-	  
-    Connection connection;   
-    Vector school_list = new Vector();
-    try 
+    DB_Helper connector = new DB_Helper();
+    Vector disc_list = connector.fetchDiscipline();
+    if(session.getAttribute("new_added_discipline") != null)
+    {
+    		Vector new_added_discipline_list = (Vector)session.getAttribute("new_added_discipline");
+    		for(int i = 0; i < new_added_discipline_list.size(); i++)
+    		{
+    			disc_list.add(new_added_discipline_list.get(i));
+    		}
+    }
+	if(session.getAttribute("new_added_school") == null)
 	{
-		Class.forName("org.postgresql.Driver"); 
-	} 
-	catch (ClassNotFoundException e)
-	{ 
-		System.out.println("Where is your PostgreSQL JDBC Driver? "
-				+ "Include in your library path!");
-		e.printStackTrace();
-		return;
-	} 
-	 connection = null;
-
-	try 
-	{
-
-		connection = DriverManager.getConnection(
-				"jdbc:postgresql://127.0.0.1:5432/grad_admin", "postgres",
-				"4742488");
-	} 
-	catch (SQLException e) 
-	{
-		e.printStackTrace();
-		return;
+		HashMap new_school_list = new HashMap();
+		new_school_list.put(place, school);
+		session.setAttribute("new_added_school_list", new_school_list);
 	}
+	else
+	{
+		HashMap school_list = (HashMap)session.getAttribute("new_added_school_list");
+		school_list.put(place, school);
+		session.setAttribute("new_added_school_list", school_list);
+	}
+	//now we want to insert the newly added school to database
+	
+	/*if(request.getParameter("added_school_name") !=null && !request.getParameter("added_school_name").isEmpty())
+{
+    
 	if (connection != null) 
 	{
 		try
-		{				
-			java.sql.Statement st = connection.createStatement();
-			
-
-           String sql = "select cs_id from countries_and_states where country_state ='"+ place + "'";
-									
-             ResultSet rs =  st.executeQuery(sql);
-               rs.next();
-        	   int cs_id = rs.getInt(1);
-        	   out.print(cs_id + school);
-				 sql = "insert into universities(country_state_id, university)" +
+		{		
+		   //in order to insert the school, we need to fetch the country_state_id first
+		   java.sql.Statement st = connection.createStatement();			
+           String sql = "select cs_id from countries_and_states where country_state ='"+ place + "'";								
+           ResultSet rs =  st.executeQuery(sql);
+           rs.next();
+           int cs_id = rs.getInt(1);
+           //then we can do the insertion with the school name and cs_id
+		   sql = "insert into universities(country_state_id, university)" +
 					"values ('" + cs_id + "', '" + school+ "')";
-				st.executeUpdate(sql);
-            st.close();
-            connection.close();
+		   st.executeUpdate(sql);
+           st.close();
+           connection.close();
 		}
 		catch(Exception ex)
 		{
 			
 		}
-	} else {
+	} 
+	else
+	{
 		System.out.println("Failed to make connection!");
 	}
-	   					    										    
-    							  							           			   							  
+}
+	 if(!connection.isClosed())
+	 {
+	  connection.close();							  	
+	 }*/
   %>
  
  <!-- This page contains some errors, it can not show the value inputed from index.jsp  -->
@@ -215,15 +220,12 @@
 					  	</div>
 					  	<div class="span9" style="margin-left:0px;">					      			      
 							<%
-						 	 support s = new support();   			   	
-						   	 String path1 = config.getServletContext().getRealPath("/support/disciplines.txt");
-						   	 Vector disciplines = s.getDisciplines(path1);
-						   	 for(int i=0; i<disciplines.size(); i++)
-						         out.println("<input type='radio' value='" + disciplines.get(i) + "'" + "name='discipline'" +  ">" + disciplines.get(i) + "<br>");
+							 for(int i=0; i<disc_list.size(); i++)
+						         out.println("<input type='radio' value='" + disc_list.get(i) + "'" + "name='discipline'" +  ">" + disc_list.get(i) + "<br>");
 						   	 out.println("or custom discipline: ");
 						   	%>
 							<input id="DISCIPLINE" type="text" maxlength="50" size="25" name="new_discipline"> 
-						
+
 											  			
 					  	</div>
 					  	

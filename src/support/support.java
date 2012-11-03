@@ -2,6 +2,14 @@ package support;
 import java.io.*;
 import java.util.*;
 
+/*
+* Name: Yu Xia student
+* Date: Oct 20, 2012
+* File: support.java
+* Source of Help: given source file 
+*
+* This class is given by professor, provide api to read text file from local system.
+*/
 
 public class support{
     public Vector getCountriesAndStates(String path){
