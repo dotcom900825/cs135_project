@@ -7,6 +7,65 @@
  	<link href="${pageContext.request.contextPath}/css/bootstrap.min.css" rel="stylesheet">
  	<script src="js/bootstrap.min.js"></script>
  	<script src="http://code.jquery.com/jquery-latest.js"></script>
+ 	<script text="javascript">
+ 		
+ 		function checkUniversity(uName)
+ 		{
+ 		var xmlHttp;
+ 		xmlHttp = GetXmlHttpObject();
+ 		if (xmlHttp == null)
+ 		{
+ 		  alert ("Your browser does not support AJAX!");
+ 		  return;
+ 		}
+ 		var url="checkUniversity.jsp";
+ 		url=url+"?university="+uName;
+ 		
+ 		xmlHttp.onreadystatechange = function()
+ 		{ 
+	 		if (xmlHttp.readyState==4)
+	 		{
+	 			var xmlDoc=xmlHttp.responseXML.documentElement;
+	 			var feedback= xmlDoc.getElementsByTagName("flag")[0].childNodes[0].nodeValue;
+	 			if(feedback == "true")
+	 				{
+	 				 alert(feedback);
+	 				}
+	 			else
+	 				{
+	 					//alert(feedback);	 					
+	 				}
+	 		}
+ 		};
+	 		xmlHttp.open("GET",url,true);
+	 		xmlHttp.send(null);
+ 		}
+
+ 		
+ 		function GetXmlHttpObject()
+ 		{
+ 		var xmlHttp=null;
+ 		try
+ 		  {
+ 		  // Firefox, Opera 8.0+, Safari
+ 		  xmlHttp=new XMLHttpRequest();
+ 		  }
+ 		catch (e)
+ 		  {
+ 		  // Internet Explorer
+ 		  try
+ 		    {
+ 		    xmlHttp=new ActiveXObject("Msxml2.XMLHTTP");
+ 		    }
+ 		  catch (e)
+ 		    {
+ 		    xmlHttp=new ActiveXObject("Microsoft.XMLHTTP");
+ 		    }
+ 		  }
+ 		return xmlHttp;
+ 		}
+
+ 	</script>
  </head>
  <%
  	
@@ -166,8 +225,8 @@
 					  		</label>
 					  	</div>
 					  	<div class="span8" style="margin-left:0px;">					      			      
-								<input id="ZIP_CODE" type="text" maxlength="50" size="25"   
-								value="Please enter the university's name" name="added_school_name">  	
+								<input id="other_university" type="text" maxlength="50" size="25"   
+								value="Please enter the university's name" name="added_school_name" onkeyup="checkUniversity(this.value)">  	
 					  	</div>
 					  	
 						<div class="span8" style="margin-left:300px;">					      			      

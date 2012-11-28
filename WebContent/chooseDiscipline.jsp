@@ -5,8 +5,52 @@
  <head>
  	<title>ChooseDicipline</title>
  	<link href="${pageContext.request.contextPath}/css/bootstrap.min.css" rel="stylesheet">
+ 	<link href="${pageContext.request.contextPath}/css/datepicker.css" rel="stylesheet">
  	<script src="js/bootstrap.min.js"></script>
  	<script src="http://code.jquery.com/jquery-latest.js"></script>
+ 	<script src="${pageContext.request.contextPath}/js/bootstrap-datepicker.js"> </script>
+ 	<script>
+
+ 	$(function(){
+		window.prettyPrint && prettyPrint();
+		$('#dp1').datepicker({
+			format: 'mm-dd-yyyy'
+		});
+		$('#dp2').datepicker();
+		$('#dp3').datepicker();
+		$('#dp3').datepicker();
+		$('#dpYears').datepicker();
+		$('#dpMonths').datepicker();
+		
+		
+		var startDate = new Date(2012,1,20);
+		var endDate = new Date(2012,1,25);
+		$('#dp4').datepicker()
+			.on('changeDate', function(ev){
+				if (ev.date.valueOf() > endDate.valueOf()){
+					$('#alert').show().find('strong').text('The start date can not be greater then the end date');
+				} else {
+					$('#alert').hide();
+					startDate = new Date(ev.date);
+					$('#startDate').text($('#dp4').data('date'));
+				}
+				$('#dp4').datepicker('hide');
+			});
+		$('#dp5').datepicker()
+			.on('changeDate', function(ev){
+				if (ev.date.valueOf() < startDate.valueOf()){
+					$('#alert').show().find('strong').text('The end date can not be less then the start date');
+				} else {
+					$('#alert').hide();
+					endDate = new Date(ev.date);
+					$('#endDate').text($('#dp5').data('date'));
+				}
+				$('#dp5').datepicker('hide');
+			});
+	});
+</script>
+
+ 	</script>
  </head>
  <%
  	//get school name, whether from existed one from selected hyperlink
@@ -234,9 +278,13 @@
 					  			<span style="margin-left:100px;">Expected time or awared time</span>
 					  		</label>
 					  	</div>
-					  	<div class="span9" style="margin-left:0px;">					      			      
-							  	<input id="degree_time" type="text"  maxlength="50" size="25" name="degree_time">
-			     	  	</div>
+
+			     	  	
+			     	  	
+						  <div class="span9 input-append date" id="dp3" style="margin-left:0px;">
+							<input size="16"  id="dp1" type="text" value="02-2012"  data-date-viewmode="years" data-date-format="mm/yyyy" data-date-minviewmode="months" name="degree_time">
+						  </div>
+          				
 			     	  	
 			     	  	<div class="span3" style="margin-left:-85px">
 					    	<label>

@@ -41,6 +41,47 @@
  			 
  			})(jQuery, window, document);
  	</script>
+ 	<script text="javascript">
+ 		function checkForm()
+ 		{
+ 			var lastname = document.getElementById("lastname").value;
+ 			var firstname = document.getElementById("firstname").value;
+ 			var middlename = document.getElementById("middlename").value;
+ 	
+ 			
+ 			var patterns = /^[a-z]*$/i; 		    
+ 		    if (lastname.match(patterns)) 
+ 		   {
+ 		    	return true;
+ 		   }
+ 		    else
+ 		   {
+ 		    	alert('Only allow character for the last name field, please try again');
+ 		     	return false;
+ 		   }	
+ 		    
+ 		   if (firstname.match(patterns)) 
+ 		   {
+ 		    	return true;
+ 		   }
+ 		    else
+ 		   {
+ 		    	alert('Only allow character for the first name field, please try again');
+ 		     	return false;
+ 		   }	
+ 		  if (middlename.match(patterns)) 
+		   {
+		    	return true;
+		   }
+		    else
+		   {
+		    	alert('Only allow character for the middle name field, please try again');
+		     	return false;
+		   }	
+ 		}
+
+ 		
+ 	</script>
  </head>
  <%
  	HashMap degree_list = new HashMap(); //We want to use hashmap to store degreeList, each
@@ -53,7 +94,7 @@
 		 <body>
 		  <fieldset style="background: none repeat scroll 0 0 #F9F8F3;">
 		  	<legend>Personal Information</legend>
-		  	<form method="GET" action="address.jsp" id="register-form" novalidate="novalidate">	
+		  	<form method="GET" action="address.jsp" id="register-form" novalidate="novalidate"  onSubmit="return checkForm()">	
 		  	<h3>Full legal Name</h3>		  
 		  	  <div class="container-fluid">
 				  <div class="row-fluid">
@@ -65,7 +106,7 @@
 					  		</label>
 					  	</div>
 					  	<div class="span9 fieldgroup">     		      
-					  			<input id="signupform" type="text"  maxlength="50" size="25" name="first_name">
+					  			<input id="firstname" type="text"  maxlength="50" size="25" name="first_name">
 						</div>
 						
 						<!-- Last Name part -->
@@ -75,7 +116,7 @@
 					  		</label>
 					  	</div>
 					  	<div class="span9 fieldgroup" style="margin-left:0px;">					      			      
-					  			<input id="LAST_NAME" type="text"  maxlength="50" size="25" name="last_name">
+					  			<input id="lastname" type="text"  maxlength="50" size="25" name="last_name">
 						</div>
 						
 						<!-- Middle Name part -->
@@ -85,7 +126,7 @@
 					  		</label>
 					  	</div>
 					  	<div class="span9" style="margin-left:0px;">					      			      
-					  			<input id="MIDDLE_NAME fieldgroup" type="text" maxlength="50" size="25" name="middle_name">
+					  			<input id="middlename fieldgroup" type="text" maxlength="50" size="25" name="middle_name">
 						</div>
 						
 						<!-- Country part -->
@@ -113,7 +154,7 @@
 					  	</div>
 					  		
 						<div class="span8" style="margin-left:300px;">					      			      
-					  			<input type="submit" name="submit" value="Submit Personal Data">						
+					  			<input type="submit" name="submit" value="Submit Personal Data" >						
 					  	</div>
 					
 				   </div>

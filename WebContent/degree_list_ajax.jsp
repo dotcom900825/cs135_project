@@ -3,10 +3,36 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
  <head>
- 	<title>Specialization</title>
+ 	<title>Degree List</title>
  	<link href="${pageContext.request.contextPath}/css/bootstrap.min.css" rel="stylesheet">
  	<script src="js/bootstrap.min.js"></script>
  	<script src="http://code.jquery.com/jquery-latest.js"></script>
+ 	<script type="text/javascript">
+ 		function GetXmlHttpObject()
+ 		{
+ 			var xmlHttp = null;
+ 			try
+ 			{
+ 				xmlHttp = new XMLHttpRequest();
+ 			}
+ 			catch(e)
+ 			{
+ 				try
+ 			    {
+ 			    	xmlHttp=new ActiveXObject("Msxml2.XMLHTTP");
+ 			    }
+ 			  catch (e)
+ 			    {
+ 			    	xmlHttp=new ActiveXObject("Microsoft.XMLHTTP");
+ 			    }
+ 			}
+ 			return xmlHttp;
+ 		}
+ 		function deleteDegree()
+ 		{
+ 			
+ 		}
+ 	</script>
  </head>
 <body>
 <%
@@ -19,6 +45,7 @@
 	String city = session.getAttribute("city").toString();
 	String zip_code = session.getAttribute("zip_code").toString();
 	String state = "";
+	//check whether session exists or not
 	try
 	{
 		  state = session.getAttribute("state").toString();
@@ -27,12 +54,76 @@
 	{
 		state = "";
 	}
-	DB_Helper dbConnection = new DB_Helper();
+	//we use degree_flag in case user hit fresh the page and added the degree again
+	String degree_flag = session.getAttribute("degree_flag").toString();
+	
+	//we check whether the discipline is a new added one by user
+	if(request.getParameter("new_discipline") != null && !request.getParameter("new_discipline").isEmpty())
+	{
+		//we check the discipline_flag, if it si true then we save the discipline and set it
+		//to false, so when the user hit refresh, this entry not added to database
+		if(session.getAttribute("discipline_flag") == "true")
+		{
+    	//DB_Helper conn = new DB_Helper();
+    	//conn.storeDiscipline(request.getParameter("new_discipline"));
+    	if(session.getAttribute("new_added_discipline") == null)
+    	{
+    		Vector new_added_discipline = new Vector();
+        	new_added_discipline.add(request.getParameter("new_discipline"));
+        	session.setAttribute("new_added_discipline", new_added_discipline);    	
+    	}
+    	else
+    	{
+    		Vector discipline_list = (Vector)session.getAttribute("new_added_discipline");
+    		discipline_list.add(request.getParameter("new_discipline"));
+    		session.setAttribute("new_added_discipline", discipline_list); 
+    	}
+    	session.setAttribute("discipline_flag", "false");
+		}
+    	
+	}
+	//if the user hit delete button, then we should catch the parameter and delete that 
+	//specific degree from session, we use the unique degree_id to locate it
+	if(request.getParameter("del_school") != null && !request.getParameter("del_school").isEmpty())
+	{
+		try
+		{  
+	((HashMap)session.getAttribute("degree_list")).remove((Long.decode(request.getParameter("del_school").toString())));
+		}
+		catch(Exception ex)
+		{
+	ex.printStackTrace();
+		}
+	}
+	// if the degree_adding_flag is true then we store the degree entry into the session
+	else if(degree_flag == "true")
+	{
+		long sID = (int)(Math.random()*500); // we generate a random number from 0~500 as id
+		String school_name = request.getParameter("school");
+		String gpa = request.getParameter("gpa");
+		String degree_time = request.getParameter("degree_time");
+		out.print(gpa + " " + degree_time);
+		String discipline;
+		//check whether user is using the unique discipline or not
+		if(request.getParameter("discipline") != null)
+		{
+		 discipline = request.getParameter("discipline");
+		}
+		else
+		{
+		 discipline = request.getParameter("new_discipline");
+		}
+		String degree = request.getParameter("degree");
+		//create a school_record and save it with id into the session.
+		school_record sRecord = new school_record(school_name, discipline,gpa,degree,degree_time);
+		((HashMap)session.getAttribute("degree_list")).put(sID, sRecord);
+		session.setAttribute("degree_flag", "false");
+	}
 %>
 <fieldset style="background: none repeat scroll 0 0 #F9F8F3;">
 		  	<legend>Personal Info</legend>
 		  		
-		  	<h3>Specialization</h3>		  
+		  	<h3>Degree List</h3>		  
 		  	  <div class="container-fluid">
 				  <div class="row-fluid">
 					    <div class="span2">
@@ -131,7 +222,8 @@
 					  	</div>
 					  	<br/>
 					  	<br/>
-					  <%
+					    <%
+					    	//print out the added school_list recorded in session.
 					    	Set degree_list;										
 							degree_list = ((HashMap)session.getAttribute("degree_list")).keySet();					   					    										    
 				  		
@@ -197,33 +289,21 @@
 							</div>
 							<br />
 					  	<%
-							} 							 
-		  	
-							   	
-										    Vector specializations = dbConnection.fetchSpecializations(); 	 
-							    %>
-							    
-					<form method="GET" action="verification.jsp">
-						<div class="span2" style="margin-top:50px">
-					    	<label>
-					  			<span style="margin-left:100px;">Specialization</span>
-					  		</label>
-					  	</div>
-					  	<div class="span9" style="margin-top:50px; margin-left:0px;">
-							    	<%//print out the specialization from text file
-							    	out.println("<select name=\"specialization\">");
-							    	for(int i=0; i<specializations.size(); i++)
-								        out.println("<option" + " value='" + (String)specializations.get(i) + "'>" + (String) specializations.get(i) + "</option>");
-									out.println("</select> </div>");
-							    
-								%>
-						</div>
-					
-							<div class="span8" style="margin-left:300px;">					      			      
-						  			<input type="submit" name="submit" value="Submit">						
+							} 
+						%>
+						<form method="GET" action="chooseLocation.jsp">
+							<div class="span8" style="margin-left:300px;">		
+									<input type="hidden" name="action" value="more">			      			      
+						  			<input type="submit" name="submit" value="Submit Next Degree">						
 						  	</div>
-					</form>	
+						</form>
 						
+						<!-- Sharon, please insert action code here! -->
+						<form method="GET" action="specialization.jsp">
+							<div class="span8" style="margin-left:300px;">					      			      
+						  			<input type="submit" name="submit" value="Done">						
+						  	</div>
+					  	</form>
 				   </div>
 			   </div>
 			

@@ -1,4 +1,4 @@
-<%@ page language="java" import="support.*, java.util.*, sql_helper.*" contentType="text/html; charset=GB18030"
+<%@ page language="java" import="support.*, java.util.*, java.sql.*, sql_helper.*" contentType="text/html; charset=GB18030"
     pageEncoding="GB18030"%>
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
@@ -13,8 +13,9 @@
  </head>
  <%
  	DB_Helper dbConnector = new DB_Helper();
- 	Vector disciplineList = dbConnector.DisciplineFromDegreeList();
-
+ 	DB_Helper dbConnector2 = new DB_Helper();
+ 	Vector specializationList = dbConnector.fetchSpecializations();
+	
  %>
 		 <body>
 		  <fieldset style="background: none repeat scroll 0 0 #F9F8F3;">
@@ -26,17 +27,18 @@
 				  
 						<!-- Country part -->
 						<%
-							for(int i = 0; i < disciplineList.size(); i++)
+							for(int i = 0; i < specializationList.size(); i++)
 							{
-								
+								PreparedStatement pst = dbConnector2.fetchSpecializationCount(specializationList.get(i).toString());
 						%>
 						<div class="span4">
 					    	<label>
-					  			<a style="margin-left:100px;" href="./Applications.jsp"><%=disciplineList.get(i)%></a>
+					  			<span style="margin-left:100px;"><%=specializationList.get(i)%></span>
 					  		</label>
 					  	</div>
-					  	<div class="span6 fieldgroup" style="margin-left:0px;">					      			      
-								  	
+					  	<div class="span6 fieldgroup" style="margin-left:0px;">	
+					  	<%ResultSet countSet = pst.executeQuery(); countSet.next();%>				      			      
+								  	<a href="./applications.jsp?specialization=<%=specializationList.get(i).toString()%>"><%=countSet.getString(1)%></a>
 					  	</div>
 					  	<%
 							}
