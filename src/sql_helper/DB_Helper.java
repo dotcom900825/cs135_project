@@ -376,6 +376,48 @@ public class DB_Helper
 		}
 		return applicantList;
 	}
+	
+	public Vector<Applicant> fetchApplicant(String aid)
+	{
+		Vector<Applicant> applicantList = new Vector<Applicant>();
+		if (connection != null) 
+		{
+			try
+			{		
+				java.sql.Statement st = connection.createStatement();
+				String sql = "select * from applicant where aid = '" + aid +"'";
+				ResultSet rs = st.executeQuery(sql);
+				while(rs.next())
+				{
+					String unique_id = rs.getString(1);
+					String last_name = rs.getString(2);
+					String first_name = rs.getString(3);
+					String middle_name = rs.getString(4);
+					String country = rs.getString(5);
+					String street_address = rs.getString(6);
+					String city = rs.getString(7);
+					String state = rs.getString(8);
+					String zip_code = rs.getString(9);
+					String specialization = rs.getString(10);
+					
+					Applicant aTemp = new Applicant(last_name,first_name,middle_name,
+							country,street_address,city,state,zip_code,specialization,unique_id);
+					applicantList.add(aTemp);
+				}
+				st.close();
+				connection.close();
+				}
+				catch(Exception ex)
+				{
+					ex.printStackTrace();
+				}
+			}
+		else 
+		{
+			System.out.println("Failed to make connection!");
+		}
+		return applicantList;
+	}
 	public Vector<Applicant> fetchApplicationWithSpecialization(String special)
 	{
 		Vector<Applicant> applicantList = new Vector<Applicant>();

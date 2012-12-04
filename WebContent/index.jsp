@@ -47,37 +47,45 @@
  			var lastname = document.getElementById("lastname").value;
  			var firstname = document.getElementById("firstname").value;
  			var middlename = document.getElementById("middlename").value;
- 	
- 			
+			var lastBoolean = false;
+			var firstBoolean = false;
+			var middleBoolean = true;
  			var patterns = /^[a-z]*$/i; 		    
  		    if (lastname.match(patterns)) 
  		   {
- 		    	return true;
+ 		    	lastBoolean = true;
  		   }
  		    else
  		   {
  		    	alert('Only allow character for the last name field, please try again');
- 		     	return false;
  		   }	
  		    
  		   if (firstname.match(patterns)) 
  		   {
- 		    	return true;
+ 		    	firstBoolean = true;
  		   }
  		    else
  		   {
  		    	alert('Only allow character for the first name field, please try again');
- 		     	return false;
+ 		     	
  		   }	
  		  if (middlename.match(patterns)) 
 		   {
-		    	return true;
+		    	middlenameBoolean = true;
 		   }
 		    else
 		   {
 		    	alert('Only allow character for the middle name field, please try again');
-		     	return false;
-		   }	
+		    	middlenameBoolean = false;
+		   }
+ 		   if(lastBoolean && firstBoolean && middlenameBoolean)
+ 			   {
+ 			   		return true;
+ 			   }
+ 		   else
+ 		   {
+ 				return false;   
+ 		   }
  		}
 
  		
@@ -126,7 +134,7 @@
 					  		</label>
 					  	</div>
 					  	<div class="span9" style="margin-left:0px;">					      			      
-					  			<input id="middlename fieldgroup" type="text" maxlength="50" size="25" name="middle_name">
+					  			<input id="middlename" type="text" maxlength="50" size="25" name="middle_name">
 						</div>
 						
 						<!-- Country part -->
@@ -135,7 +143,7 @@
 					  			<span style="margin-left:100px;">Country</span>
 					  		</label>
 					  	</div>
-					  	<div class="span8 fieldgroup" style="margin-left:0px;">					      			      
+					  	<div class="span8" style="margin-left:0px;">					      			      
 							<select name="country">
 								<% //Here we read country list from text file instead of Postgre database
 								DB_Helper dbHelper = new DB_Helper();

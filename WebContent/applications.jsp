@@ -7,6 +7,41 @@
  	<link href="${pageContext.request.contextPath}/css/bootstrap.css" rel="stylesheet">
  	<script src="js/bootstrap.min.js"></script>
  	<script src="http://code.jquery.com/jquery-latest.js"></script>
+ 	<script>
+ 	var check = [];
+ 	$(document).ready(function(){
+ 		$.ajaxSetup ({
+ 			cache: false
+ 		});
+			
+ 	})
+ 	function hideInfo(btn)
+ 	{
+ 		$("#result").css('display','none');
+ 		$(btn).parent().find('.btn-primary').css('display','inline'); 
+ 		$(btn).css('display','none');
+ 	}
+ 	
+ 	function loadInfo(button){
+ 		for(var i = 0; i < check.length; i++)
+ 			{
+	 			$(check[i]).parent().find('.btn-primary').css('display','inline');
+	 			$(check[i]).css('display','none');
+	 			check.pop();
+ 			}
+	 		check.push($(button).parent().find('.btn-info'));
+	 		uid = button.id;
+	 		var infoButton = $(button).parent().find('.btn-info');
+	 		var ajax_load = "<img class='loading' src='img/load.gif' alt='loading...' />";
+	 		var loadUrl = "personalInfo.jsp";
+	 		loadUrl += (("?uid=") + uid);
+	 		$("#result").html(ajax_load).load(loadUrl).css('display','inline');
+	 		$(button).parent().find('.btn-info').css('display','inline'); //show hide applicaiton button
+	 		$(button).css('display','none'); //hide show application button
+ 		};
+	
+
+ 	</script>
  </head>
  <%
  Vector<Applicant> application_list = null;
@@ -33,6 +68,8 @@
 	  
 	  	  <div class="container-fluid">
 			  <div class="row-fluid">
+			 	<div id="result">
+			 	</div>
 	 <% 
  	if(specialization != null && !specialization.isEmpty())
  	{
@@ -44,361 +81,57 @@
 		  	%>	
 					    <div class="span2" style="margin-top:50px;">
 					    	<label>
-					  			<span style="margin-left:130px;">First Name</span>
+					  			<span style="margin-left:130px;">Application</span>
 					  		</label>
 					  	</div>
 					  	<div class="span9" style="margin-top:50px;">     		      
 					  			<input id="FIRST_NAME" type="text"  readonly="readonly"  
-					  			value="<%=aTemp.first_name%>" 
+					  			value="<%=aTemp.first_name + " " + aTemp.middle_name + " " + aTemp.last_name %>" 
 					  			maxlength="50" size="25" name="first_name">
-						</div>
-						
-						<div class="span2">
-					    	<label>
-					  			<span style="margin-left:100px;">Last Name</span>
-					  		</label>
-					  	</div>
-					  	<div class="span9" style="margin-left:0px;">					      			      
-					  			<input id="LAST_NAME" type="text"  maxlength="50" size="25" readonly="readonly"  
-					  			value="<%=aTemp.last_name%>" name="last_name">
-						</div>
-						
-						<div class="span2">
-					    	<label>
-					  			<span style="margin-left:100px;">Middle Initial</span>
-					  		</label>
-					  	</div>
-					  	<div class="span9" style="margin-left:0px;">					      			      
-					  			<input id="MIDDLE_NAME" type="text" maxlength="50" size="25" readonly="readonly"  
-					  			value="<%=aTemp.middle_name%>" name="middle_name">
-						</div>
-						
-						<div class="span2">
-					    	<label>
-					  			<span style="margin-left:100px;">Country</span>
-					  		</label>
-					  	</div>
-					  	<div class="span9" style="margin-left:0px;">					      			      
-									<input id="COUNTRY" type="text" maxlength="50" size="25" readonly="readonly"  
-									value="<%=aTemp.country%>" name="country">  	
-					  	</div>
-					  	
-					  	<div class="span2">
-					    	<label>
-					  			<span style="margin-left:100px;">Street Address</span>
-					  		</label>
-					  	</div>
-					  	<div class="span9" style="margin-left:0px;">					      			      
-					  			<input id="STREET_ADDRESS" type="text" maxlength="50" size="25" readonly="readonly"  
-					  			value="<%=aTemp.street_address%>" 
-					  			name="street_address">
-						</div>
-					  	
-					  	<div class="span2">
-					    	<label>
-					  			<span style="margin-left:100px;">City</span>
-					  		</label>
-					  	</div>
-					  	<div class="span9" style="margin-left:0px;">					      			      
-								<input id="CITY" type="text" maxlength="50" size="25" readonly="readonly"  
-								value="<%=aTemp.city%>" name="city">  	
-					  	</div>
-					  	
-					  	<%
-					  		if(!aTemp.state.isEmpty()){
-					  	%>
-					  	<div class="span2">
-					    	<label>
-					  			<span style="margin-left:100px;">State</span>
-					  		</label>
-					  	</div>
-					  	<div class="span9" style="margin-left:0px;">					      			      
-								<input id="STATE" type="text" maxlength="50" size="25" readonly="readonly"  
-								value="<%=aTemp.state%>" 
-								name="state">  	
-					  	</div>
-					  	<%
-					  		}
-					  	%>
-					  	
-					  	<div class="span2">
-					    	<label>
-					  			<span style="margin-left:100px;">Zip Code</span>
-					  		</label>
-					  	</div>
-					  	<div class="span9" style="margin-left:0px;">					      			      
-								<input id="ZIP_CODE" type="text" maxlength="50" size="25" readonly="readonly"  
-								value="<%=aTemp.zip_code%>" name="zip_code">  	
-					  	</div>
-					  	
-					  	<div class="span2">
-					    	<label>
-					  			<span style="margin-left:100px;">Specialization</span>
-					  		</label>
-					  	</div>
-					  	<div class="span9" style="margin-left:0px;">					      			      
-								<input id="specialization" type="text" maxlength="50" size="25" readonly="readonly"  
-								value="<%=aTemp.specialization%>" name="specialization">  	
-					  	</div>
-			 <%
-			 DB_Helper connector2 = new DB_Helper();
-			 
-			 Vector<school_record>sList = connector2.fetchDegreeList(aTemp.unique_id);
-			 
-			 %>
-					  	<div class="span11" style="margin-top:20px">
-					    	<label>
-					  			<span style="margin-left:100px; font-size:25px">Degree List</span>
-					  		</label>
-					  	</div>
-					  	<br/>
-					  	<br/>
-					    <%					   					    										    				  		
-					  		for(school_record key : sList)	
-					  	{
-					  	%>
-					  		
-							<div class="span2" style="margin-top:20px">
-						    	<label>
-						  			<span style="margin-left:100px;">School Name</span>
-						  		</label>
-					  		</div>
-						  	<div class="span9" style="margin-top:20px; margin-left:0px">
-						  	<input  type="text"  size="25" readonly="readonly" 
-						  			value="<%=key.school_name%>">	
-						  			
-							</div>
-							
-							<div class="span2">
-						    	<label>
-						  			<span style="margin-left:100px;">Discipline</span>
-						  		</label>
-					  		</div>
-						  	<div class="span9" style="margin-left:0px;">					      			      
-						  			<input  type="text"  maxlength="50" size="25" readonly="readonly"  
-						  			value="<%=key.discipline%>">
-							</div>
-							
-							<div class="span2">
-						    	<label>
-						  			<span style="margin-left:100px;">GPA</span>
-						  		</label>
-					  		</div>
-						  	<div class="span9" style="margin-left:0px;">					      			      
-						  			<input  type="text"  maxlength="50" size="25" readonly="readonly"  
-						  			value="<%=key.GPA%>">
-							</div>
-							
-							<div class="span2">
-						    	<label>
-						  			<span style="margin-left:100px;">Degree</span>
-						  		</label>
-					  		</div>
-						  	<div class="span9" style="margin-left:0px;">					      			      
-						  			<input  type="text"  maxlength="50" size="25" readonly="readonly"  
-						  			value="<%=key.degree%>">
-							</div>
-							
-							<div class="span2">
-						    	<label>
-						  			<span style="margin-left:100px;">Degree Time</span>
-						  		</label>
-					  		</div>
-						  	<div class="span9" style="margin-left:0px;">					      			      
-						  			<input  type="text"  maxlength="50" size="25" readonly="readonly"  
-						  			value="<%=key.degree_time%>">
-							</div>
-							<br />
-					  	<%
-							} 
-					    %>
-
-					    <%
-					}
+					  			<span>
+					  				<button id="<%=aTemp.unique_id%>"class="btn btn-primary" onClick="loadInfo(this); ">
+					  				  Show Application
+					  				</button>
+					  				<button class="btn btn-info" style="display:none" onClick="hideInfo(this); ">
+					  					Hide Application
+					  				</button>
+					  			</span>
+						</div>					
+			<%
+			} 
  	}
- 	if(discipline != null && !discipline.isEmpty())
+ 	
+		if(discipline != null && !discipline.isEmpty())
  	{
  		DB_Helper dbConnector = new DB_Helper();
  		application_list2 = dbConnector.fetchApplicationWithDiscipline(discipline);
  	 	//out.print(application_list.size());
  						
-						for(Applicant aTemp : application_list2)
+				for(Applicant aTemp : application_list2)
 			{
 		  	%>	
-					    <div class="span2" style="margin-top:50px;">
+		  				<div class="span2" style="margin-top:50px;">
 					    	<label>
-					  			<span style="margin-left:130px;">First Name</span>
+					  			<span style="margin-left:130px;">Application</span>
 					  		</label>
 					  	</div>
 					  	<div class="span9" style="margin-top:50px;">     		      
 					  			<input id="FIRST_NAME" type="text"  readonly="readonly"  
-					  			value="<%=aTemp.first_name%>" 
+					  			value="<%=aTemp.first_name + " " + aTemp.middle_name + " " + aTemp.last_name %>" 
 					  			maxlength="50" size="25" name="first_name">
-						</div>
-						
-						<div class="span2">
-					    	<label>
-					  			<span style="margin-left:100px;">Last Name</span>
-					  		</label>
-					  	</div>
-					  	<div class="span9" style="margin-left:0px;">					      			      
-					  			<input id="LAST_NAME" type="text"  maxlength="50" size="25" readonly="readonly"  
-					  			value="<%=aTemp.last_name%>" name="last_name">
-						</div>
-						
-						<div class="span2">
-					    	<label>
-					  			<span style="margin-left:100px;">Middle Initial</span>
-					  		</label>
-					  	</div>
-					  	<div class="span9" style="margin-left:0px;">					      			      
-					  			<input id="MIDDLE_NAME" type="text" maxlength="50" size="25" readonly="readonly"  
-					  			value="<%=aTemp.middle_name%>" name="middle_name">
-						</div>
-						
-						<div class="span2">
-					    	<label>
-					  			<span style="margin-left:100px;">Country</span>
-					  		</label>
-					  	</div>
-					  	<div class="span9" style="margin-left:0px;">					      			      
-									<input id="COUNTRY" type="text" maxlength="50" size="25" readonly="readonly"  
-									value="<%=aTemp.country%>" name="country">  	
-					  	</div>
-					  	
-					  	<div class="span2">
-					    	<label>
-					  			<span style="margin-left:100px;">Street Address</span>
-					  		</label>
-					  	</div>
-					  	<div class="span9" style="margin-left:0px;">					      			      
-					  			<input id="STREET_ADDRESS" type="text" maxlength="50" size="25" readonly="readonly"  
-					  			value="<%=aTemp.street_address%>" 
-					  			name="street_address">
-						</div>
-					  	
-					  	<div class="span2">
-					    	<label>
-					  			<span style="margin-left:100px;">City</span>
-					  		</label>
-					  	</div>
-					  	<div class="span9" style="margin-left:0px;">					      			      
-								<input id="CITY" type="text" maxlength="50" size="25" readonly="readonly"  
-								value="<%=aTemp.city%>" name="city">  	
-					  	</div>
-					  	
-					  	<%
-					  		if(!aTemp.state.isEmpty()){
-					  	%>
-					  	<div class="span2">
-					    	<label>
-					  			<span style="margin-left:100px;">State</span>
-					  		</label>
-					  	</div>
-					  	<div class="span9" style="margin-left:0px;">					      			      
-								<input id="STATE" type="text" maxlength="50" size="25" readonly="readonly"  
-								value="<%=aTemp.state%>" 
-								name="state">  	
-					  	</div>
-					  	<%
-					  		}
-					  	%>
-					  	
-					  	<div class="span2">
-					    	<label>
-					  			<span style="margin-left:100px;">Zip Code</span>
-					  		</label>
-					  	</div>
-					  	<div class="span9" style="margin-left:0px;">					      			      
-								<input id="ZIP_CODE" type="text" maxlength="50" size="25" readonly="readonly"  
-								value="<%=aTemp.zip_code%>" name="zip_code">  	
-					  	</div>
-					  	
-					  	<div class="span2">
-					    	<label>
-					  			<span style="margin-left:100px;">Specialization</span>
-					  		</label>
-					  	</div>
-					  	<div class="span9" style="margin-left:0px;">					      			      
-								<input id="specialization" type="text" maxlength="50" size="25" readonly="readonly"  
-								value="<%=aTemp.specialization%>" name="specialization">  	
-					  	</div>
+					  			<span>
+					  				<button id="<%=aTemp.unique_id%>"class="btn btn-primary" onClick="loadInfo(this);">
+					  				  Show Application
+					  				</button>
+					  				<button class="btn btn-info" style="display:none" onClick="hideInfo(this); ">
+					  					Hide Application
+					  				</button>
+					  			</span>
+						</div>			
 			 <%
-			 DB_Helper connector2 = new DB_Helper();
-			 
-			 Vector<school_record>sList = connector2.fetchDegreeListDiscipline(aTemp.unique_id,discipline);
-			 
+			 } 
+ 	}
 			 %>
-					  	<div class="span11" style="margin-top:20px">
-					    	<label>
-					  			<span style="margin-left:100px; font-size:25px">Degree List</span>
-					  		</label>
-					  	</div>
-					  	<br/>
-					  	<br/>
-					    <%					   					    										    				  		
-					  		for(school_record key : sList)	
-					  	{
-					  	%>
-					  		
-							<div class="span2" style="margin-top:20px">
-						    	<label>
-						  			<span style="margin-left:100px;">School Name</span>
-						  		</label>
-					  		</div>
-						  	<div class="span9" style="margin-top:20px; margin-left:0px">
-						  	<input  type="text"  size="25" readonly="readonly" 
-						  			value="<%=key.school_name%>">	
-						  			
-							</div>
-							
-							<div class="span2">
-						    	<label>
-						  			<span style="margin-left:100px;">Discipline</span>
-						  		</label>
-					  		</div>
-						  	<div class="span9" style="margin-left:0px;">					      			      
-						  			<input  type="text"  maxlength="50" size="25" readonly="readonly"  
-						  			value="<%=key.discipline%>">
-							</div>
-							
-							<div class="span2">
-						    	<label>
-						  			<span style="margin-left:100px;">GPA</span>
-						  		</label>
-					  		</div>
-						  	<div class="span9" style="margin-left:0px;">					      			      
-						  			<input  type="text"  maxlength="50" size="25" readonly="readonly"  
-						  			value="<%=key.GPA%>">
-							</div>
-							
-							<div class="span2">
-						    	<label>
-						  			<span style="margin-left:100px;">Degree</span>
-						  		</label>
-					  		</div>
-						  	<div class="span9" style="margin-left:0px;">					      			      
-						  			<input  type="text"  maxlength="50" size="25" readonly="readonly"  
-						  			value="<%=key.degree%>">
-							</div>
-							
-							<div class="span2">
-						    	<label>
-						  			<span style="margin-left:100px;">Degree Time</span>
-						  		</label>
-					  		</div>
-						  	<div class="span9" style="margin-left:0px;">					      			      
-						  			<input  type="text"  maxlength="50" size="25" readonly="readonly"  
-						  			value="<%=key.degree_time%>">
-							</div>
-							<br />
-					  	<%
-							} 
-					  
-			}
-					    
-					}
-						  %>
 		  </fieldset>			  
 		 </body>
 </html>

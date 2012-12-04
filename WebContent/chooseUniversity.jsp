@@ -29,11 +29,11 @@
 	 			var feedback= xmlDoc.getElementsByTagName("flag")[0].childNodes[0].nodeValue;
 	 			if(feedback == "true")
 	 				{
-	 				 alert(feedback);
+	 				 alert('University existed!');
 	 				}
 	 			else
 	 				{
-	 					//alert(feedback);	 					
+	 					 					
 	 				}
 	 		}
  		};
